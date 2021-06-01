@@ -1,0 +1,14 @@
+O tom 7 aparece 3 vezes 
+O tom 8 aparece 3 vezes 
+O tom 9 aparece 3 vezes 
+O tom 2 aparece 2 vezes 
+O tom 3 aparece 2 vezes 
+O tom 4 aparece 2 vezes 
+O tom 6 aparece 2 vezes 
+O tom 12 aparece 2 vezes 
+O tom 1 aparece 1 vezes 
+O tom 5 aparece 1 vezes 
+O tom 10 aparece 1 vezes 
+O tom 13 aparece 1 vezes 
+O tom 14 aparece 1 vezes 
+O tom 16 aparece 1 vezes 

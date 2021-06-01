@@ -1,0 +1,155 @@
+Comentários em C:
+
+// Comentário em Uma Linha
+
+/*
+
+    Comentário
+	em
+Múltiplas Linhas
+
+*/
+
+
+Tipos primitivos em C:
+
+int, float (e long, como complemento), double, char, pointer, size_t [unsigned], intptr_t [signed], uintptr_t [unsigned], void
+
+	int num = 1
+	float num = 1.569
+	long float num = 1.56781212
+	double num = 1.567812
+	long double num = 1.56781219801
+	char letra = 'a'
+	int *ponteiro = &num = 0x564f6cb
+	size_t bytes = 8
+	intptr_t *pi = &num = -1892185312
+	uintptr_t *pu = &num = 2402781984
+	void vazio = 
+
+
+Tipos complexos em C:
+
+array, matrix, string, struct, union, enum
+
+	int array[3] = {1, 2, 3}										(posição 0 recebe valor 1 e posição 3 recebe lixo de memória)
+	int matrix[3][3] = {'Oi', 'Hii, 'Hola'}							(vetor de vetores[caracteres])
+	char string[6] = "Fala"											(aspas duplas para string, posição 0 recebe 'F', posição 4 recebe caractere nulo '\0' e as posições seguintes recebem lixo de memória)
+	char vetordecaracteres[6] = {'F', 'a', 'l', 'a'}				(não é uma string, pois armazena caractere por caractere sem o caractere nulo, apenas lixo de memória apos as posições definidas)
+	struct tEstudante { int idade; float nota; int matricula; };	(tipo composto por outros tipos)
+	enum meses_do_ano {Janeiro=1, ..., Junho, Dezembro=12};			(tipo composto onde a ordem é enumerada)
+
+
+
+Função Principal:
+
+int main()
+{
+	printf("Oiiiii");
+	return 0;			retorna 0 ao sistema operacional, indicando o fim do programa (POR CONVENÇÃO: retorna 0 caso tudo ocorra bem, retorna um número diferente de 0 caso ocorra um erro)
+}
+
+
+
+Definir Constantes Simbólicas (Macros) em escopo global:
+#define PI = 3.141593
+
+
+
+Formatação de Saída:
+
+%c		char
+%s		string
+%[]		string, sem ignorar qualquer caractere (se usado [^,] o programa para de ler ao encontrar uma ','; se usado [a-z] o programa lê de 'a' até 'z' e para quando um caractere não se encontra no intervalo)
+%d		número na base decimal
+%o		número na base octal
+%x		número na base hexadecimal
+%e		número em notação científica
+%p		endereço do ponteiro
+%u		número sem sinal
+%i		int
+%l		long int
+%f		float
+&lf		long float (double)
+%04d		4 casas decimais de zeros à esquerda do número
+%6i		número com 6 casas decimais, se o número possuim menos de 6 casas são imprimidos espaços em branco
+%.2f		2 casas decimais após o ponto flutuante
+%d*c%d		ignora qualquer caractere entre os dois números
+%%		sinal de %
+
+
+
+Caracteres Especiais:  [CARACTERES IGNORADOS, FUNÇÕES ATIVADAS]
+
+\n		(newline, nova linha)
+\r		(carriage return, retorno ao início da linha)
+\b		(backspace, apaga um caractere atrás)
+\t		(tab, tabulação)
+\0		(null, caractere nulo)
+\a		(Beep, som)
+\7		(Beep, som)
+\"		(quote, aspas)
+\'		(single quote, apóstrofo)
+\\		(backslash, contrabarra)
+
+
+
+Incluir bibliotecas:
+
+#include <stdio.h>		Standart Input/Output, para funções como getchar(), putchar(), scanf(), printf(), fopen() e tipos como FILE e EOF
+#include <stdlib.h>		Standart Library, para Emulação de Terminal (Shell, DOS, etc), para funções como rand(), srand(), sizeof(), malloc(), stdin() e stdout() e tipos como NULL
+#include <stdbool.h>	Standart Boolean, para tipos Booleanos (0 e 1, false e true)
+#include <stddef.h>		Padrões de Definições de Tipos
+#include <stdint.h>		Padrões de Definição de Tipos de Dados Inteiros
+#include <float.h>		Define Limites e Precisão de Variáveis Reais (com Ponto Flutuante)
+#include <time.h>		Para Medir o Tempo Dentro de um Programa e para funções como time() e clock()
+#include <math.h>		Para Operações Matemáticas e para funções como sqrt(), pow(), log() e sin()
+#include <tgmath.h>		Para Implementar Facilidades para Utilização de Funções Matemáticas
+#include <gmp.h>		Para Precisão Multipla Aritmética, usado para cálculos e criptografia
+#include <complex.h>	Para Manipulação de Números Complexos
+#include <string.h>		Para Manipulação de Strings e para funções como strlen(), strcpy(), strcat() e strcmp()
+#include <locale.h>		Para Localização de Programas, Unidades de Medidas/Monetárias e Acentuação de Acordo com o Idioma e a Região e para funções como setlocale()
+#include <ctype.h>		Para Classificar Caracteres ASCII e para funções como isdigit(), islower() e isalnum()
+#include <conio.h>		Para Manipular Caracteres na Tela e para funções como getch(), gotoxy(), clrscr(), textbackground(), texcolor() e cprintf()
+#include <assert.h>		Implementa Ajuda na Detecção de Erros em Versões de Depuração
+#include <errno.h>		Teste de Códigos de Erro Reportados pelas Funções de Bibliotecas
+#include <signal.h>		Implementa Definições para Receber e Tratar de Sinais
+#include <unistd.h>		Fornece acesso à API da Interface para Sistema Operacionais POSIX. Logo, está disponível para/em qualquer Sistema Operacional e Compilador compatível com POSIX, ou seja, para qualquer SO da família Unix (Linux, GNU, BSD...)
+#include <windows.h>	Contém declarações para todas as funções na API do Sistema Operacional Windows, todas as macros comuns usadas pelos programadores do Windows e todos os tipos de dados usados ​​pelas várias funções e subsistemas
+...
+
+
+
+Para compilar um arquivo se usa o programa gcc (ou clang)
+
+	gcc caminho/codigofonte.c -o caminho/arquivoexecutavel
+				ou
+	gcc caminho/codigofonte.c -o caminho/arquivoexecutavel -lm	(flag para uso de bibliotecas matemáticas)
+				ou
+	gcc caminho/main.c funcoes.c -o caminho/arquivoexecutavel	(para módulos separados em arquivos e com cabeçalho)
+
+Para executar o arquivo compilado se usa o comando
+
+	./caminho/arquivoexecutavel
+
+
+
+Para apenas mandar um arquivo como input de um programa se usa o comando
+
+	./arquivoexecutavel < caminho/arquivoinput				< para o input
+
+
+Para apenas salvar um arquivo como output de um programa se usa o comando
+
+	./arquivoexecutavel > caminho/arquivooutput				> para o output
+
+
+Para mandar um arquivo como input de um programa e salvar o output se usa o comando
+
+	./arquivoexecutavel < caminho/arquivoinput > caminho/arquivooutput					< > para o input e output
+
+
+
+Para ver a diverença entre dois arquivos se usa o programa diff
+
+	diff arquivo1 arquivo2
