@@ -1,10 +1,10 @@
-# 1 "hello_word.c"
+# 1 "hello_world.c"
 # 1 "<built-in>"
 # 1 "<command-line>"
 # 31 "<command-line>"
 # 1 "/usr/include/stdc-predef.h" 1 3 4
 # 32 "<command-line>" 2
-# 1 "hello_word.c"
+# 1 "hello_world.c"
 # 1 "/usr/include/stdio.h" 1 3 4
 # 27 "/usr/include/stdio.h" 3 4
 # 1 "/usr/include/x86_64-linux-gnu/bits/libc-header-start.h" 1 3 4
@@ -722,7 +722,7 @@ extern int __uflow (FILE *);
 extern int __overflow (FILE *, int);
 # 873 "/usr/include/stdio.h" 3 4
 
-# 2 "hello_word.c" 2
+# 2 "hello_world.c" 2
 # 1 "/usr/include/stdlib.h" 1 3 4
 # 25 "/usr/include/stdlib.h" 3 4
 # 1 "/usr/include/x86_64-linux-gnu/bits/libc-header-start.h" 1 3 4
@@ -1815,13 +1815,13 @@ extern int getloadavg (double __loadavg[], int __nelem)
 # 1014 "/usr/include/stdlib.h" 2 3 4
 # 1023 "/usr/include/stdlib.h" 3 4
 
-# 3 "hello_word.c" 2
+# 3 "hello_world.c" 2
 
 
-# 4 "hello_word.c"
+# 4 "hello_world.c"
 int main()
 {
- printf("Hello Word! \n");
+ printf("Hello World! \n");
 
  return 0;
 }

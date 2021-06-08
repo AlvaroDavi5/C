@@ -1,8 +1,8 @@
 
-echo "Hi, this is my first makefile"
+@ echo "Hi, this is my first makefile"
 
-echo ''
+@ echo ''
 
-echo "Your actual directory is: "
-pwd
+@ echo "Your actual directory is: "
+@ pwd
 

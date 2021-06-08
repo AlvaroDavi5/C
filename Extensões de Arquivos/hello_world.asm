@@ -1,8 +1,8 @@
-	.file	"hello_word.c"
+	.file	"hello_world.c"
 	.text
 	.section	.rodata
 .LC0:
-	.string	"Hello Word! "
+	.string	"Hello World! "
 	.text
 	.globl	main
 	.type	main, @function
