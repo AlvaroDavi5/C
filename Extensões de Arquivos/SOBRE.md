@@ -27,7 +27,7 @@ makefile
 
 
 
-
+```
 	gcc -E hello_word.c -o hello_word.i  
 	gcc -S hello_word.i -o hello_word.s  
 	gcc -c hello_word.s -o hello_word.o  
@@ -35,4 +35,5 @@ makefile
 	gcc hello_word.c -o hello_word.out 
 	gcc hello_word.c -o hello_word.exe 
 	gcc hello_word.c -o hello_word  
+```
 
