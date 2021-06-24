@@ -19,7 +19,7 @@ struct acc // implementacao da estrutura
 
 Conta * gerarConta(Usuario *user, int numAcc)
 {
-	Conta *account = (Conta *) malloc(sizeof(Conta)); // ponteiro opaco - ponteiro para estrutura opaca (uma estrutura nao declarada ou inicializada no codigo, tornando-a protegida em outro arquivo, portavel entre versoes e tornando o codigo mais rapido e limpo, escondendo a implementacao do cliente)
+	Conta *account = (Conta *) malloc(sizeof(Conta)); // opaque pointer/ponteiro opaco - ponteiro para estrutura opaca (uma estrutura nao declarada ou inicializada no codigo, tornando-a protegida em outro arquivo, portavel entre versoes e tornando o codigo mais rapido e limpo, escondendo a implementacao do cliente)
 
 	account->usuario = user;
 	account->agencia = (rand() % 9989) + 10;
