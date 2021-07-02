@@ -23,7 +23,7 @@ Conta * gerarConta(Usuario *user, int numAcc)
 
 	account->usuario = user;
 	account->agencia = (rand() % 9989) + 10;
-	account->conta = (int) numAcc;
+	account->conta = numAcc;
 	account->saldo = 0.00;
 	account->nMov = 0;
 
