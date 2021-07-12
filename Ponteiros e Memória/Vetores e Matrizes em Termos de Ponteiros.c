@@ -16,11 +16,12 @@ int main()
 
 	printf("Type array length: ");
 	scanf("%d", &size);
-	printf("Type 3d matrix dimentions: ");
+	printf("Type 3d matrix dimentions length: ");
 	scanf("%d %d %d", &rows, &columns, &layers);
 
-	int vector[size], *array=NULL; // vector[] → *array, pois ambos sao ponteiros que apontam para um endereco inicial
-	array = (int *)malloc(size * sizeof(int));
+	int vector[size], *array=NULL; // vector[] → *array, because both are pointers that point to a starting address
+	if (size >= 1)
+		array = (int *) malloc(size * sizeof(int));
 
 	srand(time(NULL));
 
@@ -39,9 +40,12 @@ int main()
 
 void fillArray(int *arr, int size)
 {
+	if (size < 1)
+		return;
+
 	for (int i = 0; i < size; i++)
 	{
-		*(arr + i) = rand() % 50; // arr[+i] → *(arr + i), pois vai passando para o proximo endereco alocado
+		*(arr + i) = rand() % 50; // arr[+i] → *(arr + i), because it moves to the next allocated address
 	}
 
 	printArray(arr, size);
@@ -62,20 +66,23 @@ void printArray(int arr[], int size)
 
 void allocMatrix3D(int rows, int columns, int layers)
 {
-	int ***matrix = (int ***)malloc(rows * sizeof(int **));
+	if (rows < 1 || columns < 1 || layers < 1)
+		return;
+
+	int ***matrix = (int ***) malloc(rows * sizeof(int **));
 
 	for (int i = 0; i < rows; i++)
 	{
-		matrix[i] = (int **)malloc(columns * sizeof(int *));
+		matrix[i] = (int **) malloc(columns * sizeof(int *));
 		for (int j = 0; j < columns; ++j)
 		{
-			matrix[i][j] = (int *)malloc(layers * sizeof(int));
+			matrix[i][j] = (int *) malloc(layers * sizeof(int));
 		}
 	}
 
 	fillMatrix(matrix, rows, columns, layers);
 
-	//free(matrix)	errado! Primeiro precisa liberar todos os elementos, começando pela camada mais interna
+	//free(matrix)	WRONG! First you need to release all elements, starting with the innermost layer
 	for (int i = 0; i < rows; i++)
 	{
 		for (int j = 0; j < columns; ++j)
@@ -95,7 +102,7 @@ void fillMatrix(int ***matrix, int rows, int columns, int layers)
 		{
 			for (int k = 0; k < layers; ++k)
 			{
-				matrix[i][j][k] = rand() % 10; // matrix[][][] → ***matrix
+				matrix[i][j][k] = *(*(*(matrix +i) +j) +k) = rand() % 10; // matrix[][][] → ***matrix
 			}
 		}
 	}
@@ -105,6 +112,9 @@ void fillMatrix(int ***matrix, int rows, int columns, int layers)
 
 void printMatrix(int ***matrix, int rows, int columns, int layers)
 {
+	if (rows < 1 || columns < 1 || layers < 1)
+		return;
+
 	for (int i = 0; i < rows; i++)
 	{
 		for (int j = 0; j < columns; ++j)
@@ -116,9 +126,12 @@ void printMatrix(int ***matrix, int rows, int columns, int layers)
 				if (k < (layers - 1))
 					printf(", ");
 			}
+
 			if (j < (columns - 1))
 				printf(" | ");
 		}
-	printf("\n");
+
+		printf("\n");
 	}
 }
+
