@@ -1,5 +1,5 @@
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 
 typedef int (* fptrCompare)(int, int);
@@ -29,6 +29,7 @@ Node * getNode(LinkedList *list, fptrCompare compareFunction, int position);
 void insertNextNode(LinkedList *list, Node *node);
 void insertData(Node *node, int value);
 void deleteNode(LinkedList *list, Node *node);
+void destroyLinkedList(LinkedList *list);
 void displayLinkedList(LinkedList *list);
 int compareData(int d1, int d2);
 
@@ -36,7 +37,7 @@ int compareData(int d1, int d2);
 int main()
 {
 	int op = 999, value = 0;
-	LinkedList *my_list;
+	LinkedList *my_list = (LinkedList *) malloc(sizeof(LinkedList));
 	Node *my_node;
 
 	initLinkedList(my_list);
@@ -59,6 +60,7 @@ int main()
 		switch(op)
 		{
 			case 0:
+				destroyLinkedList(my_list);
 				exit(0);
 				break;
 			case 1:
@@ -114,7 +116,7 @@ void initLinkedList(LinkedList *list)
 
 void addNewHead(LinkedList *list, int value)
 {
-	Node *node = (Node*) malloc(sizeof(Node));
+	Node *node = (Node *) malloc(sizeof(Node));
 	node->data = value;
 
 	if (list->head == NULL)
@@ -140,7 +142,7 @@ void addNewHead(LinkedList *list, int value)
 
 void addNewTail(LinkedList *list, int value)
 {
-	Node *node = (Node*) malloc(sizeof(Node));
+	Node *node = (Node *) malloc(sizeof(Node));
 
 	node->data = value;
 	node->next = NULL;
@@ -178,7 +180,7 @@ Node * getNode(LinkedList *list, fptrCompare compareFunction, int position)
 
 void insertNextNode(LinkedList *list, Node *node)
 {
-	Node *newNode = (Node*) malloc(sizeof(Node));
+	Node *newNode = (Node *) malloc(sizeof(Node));
 
 	newNode->data = 0;
 	newNode->next = node->next;
@@ -247,6 +249,22 @@ void deleteNode(LinkedList *list, Node *node)
 			indexedNode = indexedNode->next;
 		}
 	}
+}
+
+void destroyLinkedList(LinkedList *list)
+{
+	Node *current = list->head;
+	Node *next = NULL;
+
+	while (current != NULL)
+	{
+		next = current->next;
+
+		deleteNode(list, current);
+		current = next;
+	}
+	
+	free(list);
 }
 
 void displayLinkedList(LinkedList *list)
