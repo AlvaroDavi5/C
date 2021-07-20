@@ -22,7 +22,7 @@ struct list
 typedef struct list LinkedList;
 
 
-void initLinkedList(LinkedList *list);
+LinkedList * initLinkedList(LinkedList *list);
 void addNewHead(LinkedList *list, int value);
 void addNewTail(LinkedList *list, int value);
 Node * getNode(LinkedList *list, fptrCompare compareFunction, int position);
@@ -37,10 +37,10 @@ int compareData(int d1, int d2);
 int main()
 {
 	int op = 999, value = 0;
-	LinkedList *my_list = (LinkedList *) malloc(sizeof(LinkedList));
+	LinkedList *my_list;
 	Node *my_node;
 
-	initLinkedList(my_list);
+	my_list = initLinkedList(my_list);
 
 	do
 	{
@@ -106,12 +106,16 @@ int main()
 }
 
 
-void initLinkedList(LinkedList *list)
+LinkedList * initLinkedList(LinkedList *list)
 {
+	list = (LinkedList *) malloc(sizeof(LinkedList));
+
 	list->size = 0;
 	list->head = NULL;
 	list->current = NULL;
 	list->tail = NULL;
+
+	return list;
 }
 
 void addNewHead(LinkedList *list, int value)
@@ -263,7 +267,7 @@ void destroyLinkedList(LinkedList *list)
 		deleteNode(list, current);
 		current = next;
 	}
-	
+
 	free(list);
 }
 
