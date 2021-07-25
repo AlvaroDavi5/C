@@ -8,7 +8,8 @@ struct node
 {
 	int index;
 	int data;
-	struct node *next; // only next Node pointer...
+	struct node *prev;
+	struct node *next; // two navigation Node pointers...
 };
 typedef struct node Node;
 
@@ -16,7 +17,7 @@ struct list
 {
 	int size;
 	Node *head;
-	Node *current; // [...] makes one-way List
+	Node *current; // [...] makes two-ways List
 	Node *tail;
 };
 typedef struct list LinkedList;
@@ -26,6 +27,7 @@ LinkedList * initLinkedList(LinkedList *list);
 void addNewHead(LinkedList *list, int value);
 void addNewTail(LinkedList *list, int value);
 Node * getNode(LinkedList *list, fptrCompare compareFunction, int position);
+void insertPrevNode(LinkedList *list, Node *node);
 void insertNextNode(LinkedList *list, Node *node);
 void insertData(Node *node, int value);
 void deleteNode(LinkedList *list, Node *node);
@@ -49,7 +51,7 @@ int main()
 		printf("1. Add New Head\n");
 		printf("2. Add New Tail\n");
 		printf("3. Select a Node\n");
-		printf("4. Insert Next Node After Selected Node\n");
+		printf("4. Insert Previous/Next Node Before/After Selected Node\n");
 		printf("5. Insert a Value in Selected Node\n");
 		printf("6. Delete Selected Node\n");
 		printf("7. Display Linked List\n");
@@ -80,7 +82,14 @@ int main()
 				printf("Selected!\n");
 				break;
 			case 4:
-				insertNextNode(my_list, my_node);
+				printf("Type '1' to insert before and '2' to insert after: ");
+				scanf("%d", &value);
+				if (value == 1)
+					insertPrevNode(my_list, my_node);
+				else if (value == 2)
+					insertNextNode(my_list, my_node);
+				else
+					printf("Invalid option!");
 				break;
 			case 5:
 				printf("Type a value: ");
@@ -109,7 +118,6 @@ int main()
 LinkedList * initLinkedList(LinkedList *list)
 {
 	list = (LinkedList *) malloc(sizeof(LinkedList));
-
 	list->size = 0;
 	list->head = NULL;
 	list->current = NULL;
@@ -122,6 +130,7 @@ void addNewHead(LinkedList *list, int value)
 {
 	Node *node = (Node *) malloc(sizeof(Node));
 	node->data = value;
+	node->prev = NULL;
 
 	if (list->head == NULL)
 	{
@@ -131,15 +140,19 @@ void addNewHead(LinkedList *list, int value)
 	else
 	{
 		node->next = list->head;
+		(list->head)->prev = node;
 	}
 
 	list->head = node;
 	list->size += 1;
 
 	Node *current = list->head;
+	Node *previous = NULL;
 	for (int i = 0; i < list->size; i++)
 	{
 		current->index = i;
+		current->prev = previous;
+		previous = current;
 		current = current->next;
 	}
 }
@@ -161,6 +174,7 @@ void addNewTail(LinkedList *list, int value)
 	}
 
 	node->index = list->size;
+	node->prev = list->tail;
 	list->tail = node;
 	list->size += 1;
 }
@@ -182,11 +196,50 @@ Node * getNode(LinkedList *list, fptrCompare compareFunction, int position)
 	return NULL;
 }
 
+void insertPrevNode(LinkedList *list, Node *node)
+{
+	Node *newNode = (Node *) malloc(sizeof(Node));
+
+	newNode->data = 0;
+	newNode->prev = node->prev;
+	newNode->next = node;
+
+	if (list->head == NULL)
+	{
+		list->head = newNode;
+	}
+	else
+	{
+		(node->prev)->next = newNode;
+		node->prev = newNode;
+	}
+
+	if (newNode->next != NULL)
+	{
+		newNode->index = newNode->next->index;
+		Node *current = newNode->next;
+		for (int i = newNode->index; i < list->size; i++)
+		{
+			current->index = i+1;
+			current = current->next;
+
+			if (current == NULL)
+				break;
+		}
+	}
+	else
+	{
+		newNode->index = list->size;
+	}
+	list->size += 1;
+}
+
 void insertNextNode(LinkedList *list, Node *node)
 {
 	Node *newNode = (Node *) malloc(sizeof(Node));
 
 	newNode->data = 0;
+	newNode->prev = node;
 	newNode->next = node->next;
 
 	if (list->head == NULL)
@@ -195,6 +248,7 @@ void insertNextNode(LinkedList *list, Node *node)
 	}
 	else
 	{
+		(node->next)->prev = newNode;
 		node->next = newNode;
 	}
 
@@ -265,7 +319,6 @@ void deleteNode(LinkedList *list, Node *node)
 	}
 }
 
-
 void destroyLinkedList(LinkedList *list)
 {
 	Node *current = list->head;
@@ -278,7 +331,7 @@ void destroyLinkedList(LinkedList *list)
 		deleteNode(list, current);
 		current = next;
 	}
-
+	
 	free(list);
 }
 

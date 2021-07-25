@@ -198,12 +198,22 @@ void insertNextNode(LinkedList *list, Node *node)
 		node->next = newNode;
 	}
 
-	newNode->index = newNode->next->index;
-	Node *current = newNode->next;
-	for (int i = newNode->index; i < list->size; i++)
+	if (newNode->next != list->head)
 	{
-		current->index = i+1;
-		current = current->next;
+		newNode->index = newNode->next->index;
+		Node *current = newNode->next;
+		for (int i = newNode->index; i < list->size; i++)
+		{
+			current->index = i+1;
+			current = current->next;
+
+			if (current->index == 0)
+				break;
+		}
+	}
+	else
+	{
+		newNode->index = list->size;
 	}
 	list->size += 1;
 }
