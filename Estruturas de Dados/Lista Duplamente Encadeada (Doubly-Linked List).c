@@ -146,14 +146,14 @@ void addNewHead(LinkedList *list, int value)
 	list->head = node;
 	list->size += 1;
 
-	Node *current = list->head;
+	list->current = list->head;
 	Node *previous = NULL;
 	for (int i = 0; i < list->size; i++)
 	{
-		current->index = i;
-		current->prev = previous;
-		previous = current;
-		current = current->next;
+		(list->current)->index = i;
+		(list->current)->prev = previous;
+		previous = list->current;
+		list->current = (list->current)->next;
 	}
 }
 
@@ -181,16 +181,16 @@ void addNewTail(LinkedList *list, int value)
 
 Node * getNode(LinkedList *list, fptrCompare compareFunction, int position)
 {
-	Node *current = list->head;
+	list->current = list->head;
 
-	while (current != NULL)
+	while (list->current != NULL)
 	{
-		if (compareFunction(current->index, position) == 0)
+		if (compareFunction((list->current)->index, position) == 0)
 		{
-			return current;
+			return list->current;
 		}
 
-		current = current->next;
+		list->current = (list->current)->next;
 	}
 
 	return NULL;
@@ -217,13 +217,13 @@ void insertPrevNode(LinkedList *list, Node *node)
 	if (newNode->next != NULL)
 	{
 		newNode->index = newNode->next->index;
-		Node *current = newNode->next;
+		list->current = newNode->next;
 		for (int i = newNode->index; i < list->size; i++)
 		{
-			current->index = i+1;
-			current = current->next;
+			(list->current)->index = i+1;
+			list->current = (list->current)->next;
 
-			if (current == NULL)
+			if (list->current == NULL)
 				break;
 		}
 	}
@@ -255,13 +255,13 @@ void insertNextNode(LinkedList *list, Node *node)
 	if (newNode->next != NULL)
 	{
 		newNode->index = newNode->next->index;
-		Node *current = newNode->next;
+		list->current = newNode->next;
 		for (int i = newNode->index; i < list->size; i++)
 		{
-			current->index = i+1;
-			current = current->next;
+			(list->current)->index = i+1;
+			list->current = (list->current)->next;
 
-			if (current == NULL)
+			if (list->current == NULL)
 				break;
 		}
 	}
@@ -279,7 +279,7 @@ void insertData(Node *node, int value)
 
 void deleteNode(LinkedList *list, Node *node)
 {
-	Node *current = list->head;
+	list->current = list->head;
 
 	if (node == list->head)
 	{
@@ -294,14 +294,14 @@ void deleteNode(LinkedList *list, Node *node)
 	}
 	else
 	{
-		while (current != NULL && current->next != node)
+		while (list->current != NULL && (list->current)->next != node)
 		{
-			current = current->next;
+			list->current = (list->current)->next;
 		}
-		if (current != NULL && current->next == node)
+		if (list->current != NULL && (list->current)->next == node)
 		{
-			current->next = node->next;
-			current->next->index = node->index;
+			(list->current)->next = node->next;
+			(list->current)->next->index = node->index;
 		}
 	}
 
@@ -321,28 +321,28 @@ void deleteNode(LinkedList *list, Node *node)
 
 void destroyLinkedList(LinkedList *list)
 {
-	Node *current = list->head;
+	list->current = list->head;
 	Node *next = NULL;
 
-	while (current != NULL)
+	while (list->current != NULL)
 	{
-		next = current->next;
+		next = (list->current)->next;
 
-		deleteNode(list, current);
-		current = next;
+		deleteNode(list, list->current);
+		list->current = next;
 	}
-	
+
 	free(list);
 }
 
 void displayLinkedList(LinkedList *list)
 {
-	Node *current = list->head;
+	list->current = list->head;
 
-	while (current != NULL)
+	while (list->current != NULL)
 	{
-		printf("%d:%d - ", current->index, current->data);
-		current = current->next;
+		printf("%d:%d - ", (list->current)->index, (list->current)->data);
+		list->current = (list->current)->next;
 	}
 }
 
