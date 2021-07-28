@@ -301,6 +301,7 @@ void deleteNode(LinkedList *list, Node *node)
 		if (list->current != NULL && (list->current)->next == node)
 		{
 			(list->current)->next = node->next;
+			(list->current->next)->prev = node->prev;
 			(list->current)->next->index = node->index;
 		}
 	}
