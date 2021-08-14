@@ -1,5 +1,5 @@
 
-# variavel 'BIN_NAME' recebe o nome do programa em arquivo binario
+# macro 'BIN_NAME' recebe o nome do programa em arquivo binario
 BIN_NAME=finalprogram
 
 # macro 'C_SOURCE' usa funcao wildcard para obter os nomes de todos os arquivos de codigo-fonte com extensao .c
@@ -10,7 +10,7 @@ H_SOURCE=$(wildcard ./include/*.h)
 
 # macro 'OBJ' utiliza todos os nomes dos arquivos de 'C_SOURCE', entretanto substitui .c por .o e 'source' por 'object'
 OBJ=$(subst .c,.o,$(subst source,object,$(C_SOURCE)))
-#OBJ=${C_SOURCE:.c=.o}
+#OBJ=${C_SOURCE:.c=.o} outra forma de fazer o mesmo
 
 # definindo compilador e flags
 CPL=gcc
