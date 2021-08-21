@@ -91,9 +91,9 @@ int main()
 
 	MODO		TIPO_DE_ARQUIVO			FUNCIONALIDADE
 
-	"r"			texto					Leitura. Arquivo deve existir ("read")
-	"w"			texto					Escrita. Cria arquivo se não houver. Apaga o anterior se ele existir ("write")
-	"a"			texto					Escrita. Os dados serão adicionados no fim do arquivo ("append")
+	"r"		texto					Leitura. Arquivo deve existir ("read")
+	"w"		texto					Escrita. Cria arquivo se não houver. Apaga o anterior se ele existir ("write")
+	"a"		texto					Escrita. Os dados serão adicionados no fim do arquivo ("append")
 	"r+"		texto					Leitura/Escrita. O arquivo deve existir e pode ser modificado
 	"w+"		texto					Leitura/Escrita. Cria arquivo se não houver. Apaga o anterior se ele existir
 	"a+"		texto					Leitura/Escrita. Os dados serão adicionados no fim do arquivo
