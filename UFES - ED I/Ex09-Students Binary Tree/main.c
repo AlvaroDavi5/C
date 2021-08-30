@@ -6,7 +6,7 @@
 
 int main ()
 {
-	char *name = "e";
+	char *name = "O que Passa Colando";
 	Tree binTree = NULL;
 
 	binTree = newNode(
