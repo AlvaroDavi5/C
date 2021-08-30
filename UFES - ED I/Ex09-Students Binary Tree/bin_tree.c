@@ -33,6 +33,48 @@ int itBelongs(Node *node, char *name)
 		itBelongs(node->right, name);	
 }
 
+int nodeCount(Node *node)
+{
+	if (isEmpty(node->left) && isEmpty(node->right))
+		return 1;
+
+	if (!isEmpty(node->left) && isEmpty(node->right))
+		return nodeCount(node->left);
+
+	if (isEmpty(node->left) && !isEmpty(node->right))
+		return nodeCount(node->right);
+
+	else
+		return (nodeCount(node->left) + nodeCount(node->right));
+}
+
+int occurrencesCount(Node *node, char *name)
+{
+	if (isEmpty(node))
+		return 0; // ignore first node (its more praticle compare first node outside the function)
+
+	if (strcmp(returnNameStudent(node->student), name) == 0)
+		return (1 + occurrencesCount(node->left, name) + occurrencesCount(node->right, name));
+
+	return (occurrencesCount(node->left, name) + occurrencesCount(node->right, name)); // recursive iteration
+}
+
+int height(Node *node)
+{
+	if (isEmpty(node))
+		return -1; // empty tree height (just root node)
+	else
+	{
+		int lh = height(node->left);
+		int rh = height(node->right);
+
+		if (lh >= rh)
+			return lh+1; // compense '-1' from empty nodes (last/leaf nodes)
+		else
+			return rh+1;
+	}
+}
+
 void displayInOrder(Node *node)
 {
 	printf("<");

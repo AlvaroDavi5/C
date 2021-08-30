@@ -8,6 +8,9 @@
 
 	Node * newNode(Student *stud, Node *left, Node *right);
 	int itBelongs(Node *node, char *name);
+	int nodeCount(Node *node);
+	int occurrencesCount(Node *node, char *name);
+	int height(Node *node);
 	void displayPreOrder(Node *node);
 	void displayInOrder(Node *node);
 	void displayPostOrder(Node *node);

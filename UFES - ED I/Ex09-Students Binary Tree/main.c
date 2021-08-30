@@ -6,7 +6,7 @@
 
 int main ()
 {
-	char *charac = "e";
+	char *name = "e";
 	Tree binTree = NULL;
 
 	binTree = newNode(
@@ -46,9 +46,10 @@ int main ()
 	printf("\nElements in PostOrder:\n");
 	displayPostOrder(binTree);
 	printf("\n\n");
-	if (itBelongs(binTree, charac))
-		printf("The element '%s' exists on tree", charac);
+	if (itBelongs(binTree, name))
+		printf("The element '%s' exists on tree and have %d occurrences.", name, occurrencesCount(binTree, name));
 	printf("\n");
+	printf("The tree height is: %d and has %d nodes.\n", height(binTree), leafsCount(binTree));
 
 	FreeNode(binTree);
 
