@@ -15,6 +15,9 @@ typedef Node* Tree;
 
 Node * newNode(char *name, Node *left, Node *right);
 int itBelongs(Node *node, char *name);
+int leafsCount(Node *node);
+int occurrencesCount(Node *node, char *name);
+int height(Node *node);
 void displayPreOrder(Node *node); // starts at the root and goes first to the left branch and then to the right branch
 void displayInOrder(Node *node); // starts on the left branch, goes through the root and goes to the right branch
 void displayPostOrder(Node *node); // starts on the left branch and goes first to the right branch and then to the root
@@ -24,7 +27,7 @@ int isEmpty(Node *node);
 
 int main ()
 {
-	char *charac = "e";
+	char *name = "e";
 	Tree binTree = NULL;
 
 	binTree = newNode(
@@ -45,16 +48,17 @@ int main ()
 		)
 	);
 
-	printf("\nElements in displayInOrder: ");
+	printf("\nElements in InOrder: ");
 	displayInOrder(binTree);
-	printf("\nElements in displayPreOrder: ");
+	printf("\nElements in PreOrder: ");
 	displayPreOrder(binTree);
-	printf("\nElements in displayPostOrder: ");
+	printf("\nElements in PostOrder: ");
 	displayPostOrder(binTree);
 	printf("\n\n");
-	if (itBelongs(binTree, charac))
-		printf("The element '%s' exists on tree", charac);
+	if (itBelongs(binTree, name))
+		printf("The element '%s' exists on tree and have %d occurrences.", name, occurrencesCount(binTree, name));
 	printf("\n");
+	printf("The tree height is: %d and has %d nodes.\n", height(binTree), leafsCount(binTree));
 
 	FreeNode(binTree);
 
@@ -80,6 +84,48 @@ int itBelongs(Node *node, char *name)
 		return strcmp(node->name, name) == 0 ||
 		itBelongs(node->left, name) ||
 		itBelongs(node->right, name);	
+}
+
+int leafsCount(Node *node)
+{
+	if (isEmpty(node->left) && isEmpty(node->right))
+		return 1;
+
+	if (!isEmpty(node->left) && isEmpty(node->right))
+		return leafsCount(node->left);
+
+	if (isEmpty(node->left) && !isEmpty(node->right))
+		return leafsCount(node->right);
+
+	else
+		return (leafsCount(node->left) + leafsCount(node->right));
+}
+
+int occurrencesCount(Node *node, char *name)
+{
+	if (isEmpty(node))
+		return 0; // ignore first node (its more praticle compare first node outside the function)
+
+	if (strcmp(node->name, name) == 0)
+		return (1 + occurrencesCount(node->left, name) + occurrencesCount(node->right, name));
+
+	return (occurrencesCount(node->left, name) + occurrencesCount(node->right, name)); // recursive iteration
+}
+
+int height(Node *node)
+{
+	if (isEmpty(node))
+		return -1; // empty tree height (just root node)
+	else
+	{
+		int lh = height(node->left);
+		int rh = height(node->right);
+
+		if (lh >= rh)
+			return lh+1; // compense '-1' from empty nodes (last/leaf nodes)
+		else
+			return rh+1;
+	}
 }
 
 void displayInOrder(Node *node)
