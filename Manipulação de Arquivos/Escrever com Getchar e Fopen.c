@@ -30,7 +30,7 @@ int main()
 			else
 			{
 				fputc(letra, arq); // inserir caractere ao arquivo
-				// c = fgetc(arq);		ler o que foi inserido no arquivo [DESATIVADO pois a função fgetc() usa ponteiros, dando erro nos caracteres]
+				// c = fgetc(arq);  ler o que foi inserido no arquivo [DESATIVADO pois a função fgetc() usa ponteiros, dando erro nos caracteres]
 			}
 		}
 	}
@@ -56,7 +56,7 @@ int main()
 
 	ou
 
-	if (feof(arq))		função para saber se o arquivo chegou ao fim
+	if (feof(arq))  função para saber se o arquivo chegou ao fim
 	{
 		printf("Fim do arquivo. \n");
 	}
@@ -72,20 +72,20 @@ int main()
 
 	----------------------------------------------------------------------------------------------------------------------------------------------------
 
-	fgetc(char) e fputc(char, *archive) servem para ler/escrever um UNICO CARACTERE.
-	fgets(string, int, *archive) e fputs(string, *archive) servem para ler/escrever uma STRING.
-	fscanf(*archive, "%t ", &var) e fprintf(*archive, "%t ", var) funcionam como scanf("%t ", &var) e printf("%t ", var) mas seu input/output é em um arquivo e não no terminal/console.
+	fgetc(file) e fputc(char, *file) servem para ler/escrever um UNICO CARACTERE.
+	fgets(string, int, *file) e fputs(string, *file) servem para ler/escrever uma STRING.
+	fscanf(*file, "%t ", &var) e fprintf(*file, "%t ", var) funcionam como scanf("%t ", &var) e printf("%t ", var) mas seu input/output é em um arquivo e não no terminal/console.
 	Tais funções são para arquivos de texto.
 
-	fread(*void, int, int, *archive) e fwrite(*void, int, int, *archive) servem para ler/escrever blocos de dados em arquivos binarios.
+	fread(*void, int, int, *file) e fwrite(*void, int, int, *file) servem para ler/escrever blocos de dados em arquivos binarios.
 	Ambas são para arquivos binários;
 
 
-	fseek(*archive, int, int) serve para fazer buscas e acessos randômicos em arquivos, suas chaves de busca são definidas por SEEK_SET, SEEK_CUR ou SEEK_END (respectivamente: início, posição corrente, fim).
-	rewind(*archive) retorna para o início do arquivo a ser lido/escrito.
+	fseek(*file, int, int) serve para fazer buscas e acessos randômicos em arquivos, suas chaves de busca são definidas por SEEK_SET, SEEK_CUR ou SEEK_END (respectivamente: início, posição corrente, fim).
+	rewind(*file) retorna para o início do arquivo a ser lido/escrito.
 	Ambas são para arquivos de texto ou binários;
 
-	remove(*archive) apaga o arquivo do disco.
+	remove(*file) apaga o arquivo do disco.
 
 	---------------------- MODOS DE ABERTURA DE ARQUIVO ----------------------
 
