@@ -51,8 +51,16 @@ int main()
 
 
 
-Definir Constantes Simbólicas (Macros) em escopo global:
+Definir Variáveis de Pré-Processamento como Constantes Simbólicas (Macros) em escopo global:
 #define PI = 3.141593
+
+Funcionalidades de Macros:
+Concatenar String:
+    #define CONCAT(STRING1) STRING2_ ## STRING1
+Converter para String:
+    #define TO_STR(EXP) #EXP
+Argumentos:
+    #define MAX(E1, E2) ((E1 > E2) ? E2 : E1 )
 
 
 
