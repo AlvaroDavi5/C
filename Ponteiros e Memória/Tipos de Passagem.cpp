@@ -9,7 +9,7 @@ using namespace std;
 // funcoes de passagem
 void porValor(int num)
 {
-	num = 11;
+	num = 11; // o parametro e uma copia da variavel
 	cout << "Numero na funcao: " << num << endl;
 }
 
@@ -21,17 +21,18 @@ void porValorConstante(const int num)
 
 void porNome(int *pNum)
 {
-	*pNum = 33;
+	*pNum = 33; // o valor da variavel referenciada pelo ponteiro e modificado
 	cout << "Numero na funcao: " << *pNum << endl;
-	pNum = NULL;
+	pNum = NULL; // o valor do ponteiro e mudificado (o endereco da variavel)
 	cout << "Ponteiro na funcao: " << pNum << endl;
 }
 
 void porReferencia(int &aNum)
 {
-	aNum = 44;
+	aNum = 44; // o valor da variavel referenciada pelo endereco e modificado
 	cout << "Numero na funcao: " << aNum << endl;
 	cout << "Endereco na funcao: " << &aNum << endl;
+	// aNum = NULL; // erro: o endereco da variavel nao e mudificavel
 }
 
 
