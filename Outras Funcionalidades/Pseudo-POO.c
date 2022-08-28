@@ -68,7 +68,7 @@ int main()
 	Class Person *self = newPerson("Antonio", 18, 170); // pseudo-instantion
 	self->show(self); // pseudo self-reference
 
-	setAge(self, 19); // pse-encapsulation
+	setAge(self, 19); // pseudo-encapsulation
 	setMethod(self, &ImprimePessoa); // pseudo overriding/overloading
 
 	printf("\n");
