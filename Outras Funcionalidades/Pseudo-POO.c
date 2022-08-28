@@ -12,35 +12,35 @@
 
 #define Class struct
 
-//typedef Class person Person;
 Class Person
 {
 	char name[10];
 	int age;
 	int height;
 	void(*show)(Class Person *);
-};
+}; // pseudo class (struct)
+//typedef person* Person;
 
 
 int getAge(Class Person *person)
 {
-	return person->age;
+	return person->age; // getter
 }
 
 void setAge(Class Person *person, int value)
 {
-	person->age = value;
+	person->age = value; // setter
 }
 
 void setMethod(Class Person *person, void(*pointer)(Class Person *))
 {
-	person->show = pointer;
+	person->show = pointer; // pseudo-polimorphism
 }
 
 
 void personPrint(Class Person *person)
 {
-	printf("Name: %s \nAge: %d \nHeight: %d \n", person->name, getAge(person), person->height); // getter usado para atributo/membro
+	printf("Name: %s \nAge: %d \nHeight: %d \n", person->name, getAge(person), person->height);
 }
 
 void ImprimePessoa(Class Person *person)
@@ -51,12 +51,12 @@ void ImprimePessoa(Class Person *person)
 
 Class Person * newPerson(char name[], int age, int height)
 {
-	Class Person *person = (Class Person *) malloc(sizeof(Class Person));
+	Class Person *person = (Class Person *) malloc(sizeof(Class Person)); // pseudo-constructor
 
-	strcpy(person->name, name); // atributos (membros)
+	strcpy(person->name, name); // pseudo-attributes (struct members)
 	person->age = age;
 	person->height = height;
-	person->show = &personPrint; // metodo (ponteiro para funcao)
+	person->show = &personPrint; // pseudo-methods (function pointers)
 
 	return person;
 }
@@ -65,11 +65,11 @@ Class Person * newPerson(char name[], int age, int height)
 
 int main()
 {
-	Class Person *self = newPerson("Antonio", 18, 170); // isso seria um objeto, a instancia de uma classe 'Person'
-	self->show(self); // isso seria o metodo 'show' com 'self' ou 'this'
+	Class Person *self = newPerson("Antonio", 18, 170); // pseudo-instantion
+	self->show(self); // pseudo self-reference
 
-	setAge(self, 19); // setter usado para atributo/membro
-	setMethod(self, &ImprimePessoa); // setter usado para metodo/funcao
+	setAge(self, 19); // pse-encapsulation
+	setMethod(self, &ImprimePessoa); // pseudo overriding/overloading
 
 	printf("\n");
 	self->show(self);
