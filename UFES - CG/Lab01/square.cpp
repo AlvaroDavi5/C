@@ -4,10 +4,14 @@
 #include <GL/glut.h>
 #include <stdio.h>
 #include <string.h>
+
+
+// macros
 #define WINDOW_SIZE 500
+#define POSITION_ADJUST 0.50
 
 // global variables
-float gX = 0.0, gY = 0.0;
+float gX = 0.0, gY = 0.0, s = 1.0;
 
 void display(void)
 {
@@ -56,36 +60,60 @@ void keyPress(unsigned char key, int x, int y)
 void mouseControl(int button, int state, int x, int y)
 {
 	float posX = 0.0, posY = 0.0;
-	char buttonName[7] = "";
+	char buttonName[8] = "";
 
 	y = WINDOW_SIZE - y; // invert Y aexis
 	posX = float(x) / float(WINDOW_SIZE);
 	posY = float(y) / float(WINDOW_SIZE);
 
-	gX = posX - 0.25;
-	gY = posY - 0.25;
+	gX = (s * posX) + s * (-POSITION_ADJUST);
+	gY = (s * posY) + s * (-POSITION_ADJUST);
 
 	switch (button)
 	{
 	case 0:
-		strcpy(buttonName, "left");
+		strcpy(buttonName, "left   ");
+		s = +1.0;
 		break;
 	case 1:
-		strcpy(buttonName, "middle");
+		strcpy(buttonName, "middle ");
 		gX = 0.0;
 		gY = 0.0;
+		s = 0.0;
 		break;
 	case 2:
-		strcpy(buttonName, "right");
-		gX = -gX;
-		gY = -gY;
+		strcpy(buttonName, "right  ");
+		s = -1.0;
+		break;
+	case 3:
+		strcpy(buttonName, "scroll+");
+		s = 0.0;
+		break;
+	case 4:
+		strcpy(buttonName, "scroll-");
+		s = 0.0;
 		break;
 	default:
+		printf("%d\n", button);
 		break;
 	}
 
-	printf("Mouse Button: %s (%d)\t", buttonName, state);
+	printf("Mouse Button: (%d) %s   ", state, buttonName);
 	printf("Mouse Position: X=%d, Y=%d\n", x, y);
+
+	glutPostRedisplay();
+}
+
+void mouseUpdate(int x, int y)
+{
+	float posX = 0.0, posY = 0.0;
+
+	y = WINDOW_SIZE - y;
+	posX = float(x) / float(WINDOW_SIZE);
+	posY = float(y) / float(WINDOW_SIZE);
+
+	gX = (s * posX) + s * (-POSITION_ADJUST);
+	gY = (s * posY) + s * (-POSITION_ADJUST);
 
 	glutPostRedisplay();
 }
@@ -101,6 +129,7 @@ void initView(void)
 	glOrtho(0.0, 1.0, 0.0, 1.0, -1.0, 1.0);
 }
 
+
 int main(int argc, char **argv)
 {
 	// GLUT initialization
@@ -114,9 +143,10 @@ int main(int argc, char **argv)
 
 	// callbacks register
 	glutDisplayFunc(display);
-	//glutReshapeFunc();
+	//glutReshapeFunc(NULL);
 	glutKeyboardFunc(keyPress);
 	glutMouseFunc(mouseControl);
+	glutMotionFunc(mouseUpdate); // glutPassiveMotionFunc
 
 	// render loop
 	glutMainLoop();
