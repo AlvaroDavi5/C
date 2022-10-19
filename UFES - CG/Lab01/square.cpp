@@ -44,10 +44,10 @@ void keyPress(unsigned char key, int x, int y)
 		gY -= (0.01);
 		break;
 	case 'a':
-		gX -= (+0.01);
+		gX -= (0.01);
 		break;
 	case 'd':
-		gX += (+0.01);
+		gX += (0.01);
 		break;
 	default:
 		break;
