@@ -5,7 +5,6 @@
 #include <stdio.h>
 #include <string.h>
 
-
 // macros
 #define WINDOW_SIZE 500
 #define POSITION_ADJUST 0.50
@@ -129,7 +128,6 @@ void initView(void)
 	glOrtho(0.0, 1.0, 0.0, 1.0, -1.0, 1.0);
 }
 
-
 int main(int argc, char **argv)
 {
 	// GLUT initialization
@@ -143,7 +141,7 @@ int main(int argc, char **argv)
 
 	// callbacks register
 	glutDisplayFunc(display);
-	//glutReshapeFunc(NULL);
+	// glutReshapeFunc(NULL);
 	glutKeyboardFunc(keyPress);
 	glutMouseFunc(mouseControl);
 	glutMotionFunc(mouseUpdate); // glutPassiveMotionFunc
