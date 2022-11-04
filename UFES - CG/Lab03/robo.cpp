@@ -123,7 +123,29 @@ void RotatePoint(GLfloat x, GLfloat y, GLfloat angle, GLfloat &xOut, GLfloat &yO
 
 Tiro *Robo::Atira()
 {
-	Tiro *tiro = new Tiro(0.0, 0.0, 0.0);
+	float basePoint[2] = {this->gX, this->gY + baseHeight};
+	RotatePoint(basePoint[0], paddleHeight,
+							DegreeToRadian(90 + this->gTheta1),
+							basePoint[0], basePoint[1]);
+	RotatePoint(basePoint[0], paddleHeight,
+							DegreeToRadian(90 + this->gTheta2),
+							basePoint[0], basePoint[1]);
+
+	float topPoint[2] = {basePoint[0], basePoint[1]};
+	RotatePoint(topPoint[0], paddleHeight,
+							DegreeToRadian(90 + this->gTheta3),
+							topPoint[0], topPoint[1]);
+
+	float dirVect[2] = {
+			topPoint[0] - basePoint[0],
+			topPoint[1] - basePoint[1]};
+	float dirAngle = atan2(dirVect[1], dirVect[0]);
+
+	cout << " angle: " << RadianToDegree(dirAngle) << " cos: " << cos(dirAngle) << " sin: " << sin(dirAngle) << '\n'
+			 << " diff X: " << dirVect[0] << '\t' << "diff Y: " << dirVect[1] << '\n'
+			 << " X: " << topPoint[0] << " Y: " << topPoint[1] << endl;
+
+	Tiro *tiro = new Tiro(dirVect[0], dirVect[1], dirAngle);
 
 	return tiro;
 }
