@@ -113,39 +113,73 @@ float RadianToDegree(float rad)
 	return deg;
 }
 
+void ScalePoint(GLfloat sx, GLfloat sy, GLfloat &xOut, GLfloat &yOut)
+{
+	xOut *= sx;
+	yOut *= sy;
+}
+
+void TranslatePoint(GLfloat dx, GLfloat dy, GLfloat &xOut, GLfloat &yOut)
+{
+	xOut += dx;
+	yOut += dy;
+}
+
 void RotatePoint(GLfloat x, GLfloat y, GLfloat angle, GLfloat &xOut, GLfloat &yOut)
 {
 	float s = sin(angle), c = cos(angle);
 
-	xOut = x + ((xOut - x) * c - (yOut - y) * s);
-	yOut = y + ((xOut - x) * s + (yOut - y) * c);
+	xOut = (x * c) - (y * s);
+	yOut = (x * s) + (y * c);
 }
 
 Tiro *Robo::Atira()
 {
-	float basePoint[2] = {this->gX, this->gY + baseHeight};
-	RotatePoint(basePoint[0], paddleHeight,
-							DegreeToRadian(90 + this->gTheta1),
-							basePoint[0], basePoint[1]);
-	RotatePoint(basePoint[0], paddleHeight,
-							DegreeToRadian(90 + this->gTheta2),
-							basePoint[0], basePoint[1]);
+	float h1Point[2] = {0.0, 0.0};
+	TranslatePoint(0.0, paddleHeight, h1Point[0], h1Point[1]);
+	RotatePoint(
+			h1Point[0], h1Point[1],
+			DegreeToRadian(this->gTheta1),
+			h1Point[0], h1Point[1]);
+	float h2Point[2] = {0.0, 0.0};
+	TranslatePoint(0.0, paddleHeight, h2Point[0], h2Point[1]);
+	RotatePoint(
+			h2Point[0], h2Point[1],
+			DegreeToRadian(this->gTheta2),
+			h2Point[0], h2Point[1]);
+	float h3Point[2] = {0.0, 0.0};
+	TranslatePoint(0.0, paddleHeight, h3Point[0], h3Point[1]);
+	RotatePoint(
+			h3Point[0], h3Point[1],
+			DegreeToRadian(this->gTheta3),
+			h3Point[0], h3Point[1]);
 
-	float topPoint[2] = {basePoint[0], basePoint[1]};
-	RotatePoint(topPoint[0], paddleHeight,
-							DegreeToRadian(90 + this->gTheta3),
-							topPoint[0], topPoint[1]);
+	float basePoint[2] = {
+			this->gX + h1Point[0] + h2Point[0],
+			this->gY + baseHeight + h1Point[1] + h2Point[1]};
+	float topPoint[2] = {
+			basePoint[0] + h3Point[0],
+			basePoint[1] + h3Point[1]};
 
 	float dirVect[2] = {
 			topPoint[0] - basePoint[0],
 			topPoint[1] - basePoint[1]};
-	float dirAngle = atan2(dirVect[1], dirVect[0]);
+	float dirVectNorm = sqrt(pow(dirVect[0], 2) + pow(dirVect[1], 2));
+
+	float unitVect[2] = {
+			dirVect[0] / dirVectNorm,
+			dirVect[1] / dirVectNorm};
+	float dirAngle = atan2(unitVect[1], unitVect[0]);
+	if (isnan(dirAngle))
+	{
+		dirAngle = DegreeToRadian(90.0);
+	}
 
 	cout << " angle: " << RadianToDegree(dirAngle) << " cos: " << cos(dirAngle) << " sin: " << sin(dirAngle) << '\n'
 			 << " diff X: " << dirVect[0] << '\t' << "diff Y: " << dirVect[1] << '\n'
-			 << " X: " << topPoint[0] << " Y: " << topPoint[1] << endl;
+			 << " X: " << topPoint[0] << '\t' << "Y: " << topPoint[1] << endl;
 
-	Tiro *tiro = new Tiro(dirVect[0], dirVect[1], dirAngle);
+	Tiro *tiro = new Tiro(topPoint[0], topPoint[1], dirAngle);
 
 	return tiro;
 }
