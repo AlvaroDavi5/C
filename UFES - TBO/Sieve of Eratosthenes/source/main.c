@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
 		exit(1);
 	}
 
-	const int arraySize = (int)strtol(argv[1], NULL, 10);
+	const int arraySize = (int)atoi(argv[1]);
 	int *primeNumbers = NULL;
 
 	primeNumbers = (int *)malloc(arraySize * sizeof(int));
