@@ -13,6 +13,7 @@
 	linebreak: .byte '\n'
 	date: .word 1984
 	pi: .float 3.14
+	var1: .word 5555
 
 
 .text # instructions segment
@@ -34,7 +35,10 @@
 	move $s0, $t8 # $t8 → $s0
 
 	# memory load/store operations
-	#lw $t9, 0($s0)
+	la $t8, var1 # $t8 = var1.addr
+	lw $t9, var1 # $t9 = var1.word
+	sw $s0, 0($t8) # MEM[$t8] = $s0
+	sw $t9, 4($t8) # MEM[$t8+4] = $t9
 
 	# print string
 	li $v0, 4 # load immediate string (4)
