@@ -7,8 +7,6 @@
 #include "../include/sort.h"
 #include "../include/utils.h"
 
-#define PRINT_ARRAY 0
-
 int main(int argc, char *argv[])
 {
 	srand(time(NULL));
@@ -17,22 +15,42 @@ int main(int argc, char *argv[])
 	if (argc < 3)
 	{
 		printf("Expected 3 arguments but received %d arguments", argc);
-		exit(1);
+		exit(EXIT_FAILURE);
 	}
 
 	const size_t itemsAmount = (size_t)atoi(argv[1]);
-	Item *itemsArray = allocateItemsArray(itemsArray, itemsAmount);
+	Item *bubbleSortArray = NULL, *selectionSortArray = NULL, *insertionSortArray = NULL;
+	Item *mergeSortArray = NULL, *shellSortArray = NULL, *heapSortArray = NULL, *quickSortArray = NULL;
+	bubbleSortArray = allocateItemsArray(bubbleSortArray, itemsAmount);
+	selectionSortArray = allocateItemsArray(selectionSortArray, itemsAmount);
+	insertionSortArray = allocateItemsArray(insertionSortArray, itemsAmount);
+	mergeSortArray = allocateItemsArray(mergeSortArray, itemsAmount);
+	shellSortArray = allocateItemsArray(shellSortArray, itemsAmount);
+	heapSortArray = allocateItemsArray(heapSortArray, itemsAmount);
+	quickSortArray = allocateItemsArray(quickSortArray, itemsAmount);
 
-	if (itemsArray == NULL)
+	if (bubbleSortArray == NULL ||
+			selectionSortArray == NULL ||
+			insertionSortArray == NULL ||
+			mergeSortArray == NULL ||
+			shellSortArray == NULL ||
+			heapSortArray == NULL ||
+			quickSortArray == NULL)
 	{
-		printf("itemsArray allocation error!\n");
+		printf("Array allocation error!\n");
 		exit(EXIT_FAILURE);
 	}
 
 	const char *useRand = argv[2];
 	if (strcmp(useRand, "true") == 0)
 	{
-		randomValues(itemsArray, itemsAmount, 0, itemsAmount * 2);
+		randomValues(bubbleSortArray, itemsAmount, 0, itemsAmount * 2);
+		randomValues(selectionSortArray, itemsAmount, 0, itemsAmount * 2);
+		randomValues(insertionSortArray, itemsAmount, 0, itemsAmount * 2);
+		randomValues(mergeSortArray, itemsAmount, 0, itemsAmount * 2);
+		randomValues(shellSortArray, itemsAmount, 0, itemsAmount * 2);
+		randomValues(heapSortArray, itemsAmount, 0, itemsAmount * 2);
+		randomValues(quickSortArray, itemsAmount, 0, itemsAmount * 2);
 	}
 	else
 	{
@@ -40,28 +58,64 @@ int main(int argc, char *argv[])
 		{
 			Item num = 0;
 			scanf("%d", &num);
-			*(itemsArray + i) = num;
+			*(bubbleSortArray + i) = num;
+			*(selectionSortArray + i) = num;
+			*(insertionSortArray + i) = num;
+			*(mergeSortArray + i) = num;
+			*(shellSortArray + i) = num;
+			*(heapSortArray + i) = num;
+			*(quickSortArray + i) = num;
 		}
 	}
 
-	if (PRINT_ARRAY)
-	{
-		printf("Unsorted itemsArray:\n");
-		printArray(itemsArray, itemsAmount);
-	}
-
+	// bubbleSort
 	start = clock();
-	selectionSort(itemsArray, itemsAmount);
+	bubbleSort(bubbleSortArray, itemsAmount);
 	stop = clock();
-	printTimeInterval(start, stop, "SelectionSort Exec Time");
+	printTimeInterval(start, stop, "bubbleSort exec time");
+	safeFree(bubbleSortArray);
 
-	if (PRINT_ARRAY)
-	{
-		printf("Sorted itemsArray:\n");
-		printArray(itemsArray, itemsAmount);
-	}
+	// selectionSort
+	start = clock();
+	selectionSort(selectionSortArray, itemsAmount);
+	stop = clock();
+	printTimeInterval(start, stop, "selectionSort exec time");
+	safeFree(selectionSortArray);
 
-	safeFree(itemsArray);
+	// insertionSort
+	start = clock();
+	insertionSort(insertionSortArray, itemsAmount);
+	stop = clock();
+	printTimeInterval(start, stop, "insertionSort exec time");
+	safeFree(insertionSortArray);
+
+	// mergeSort
+	start = clock();
+	mergeSort(mergeSortArray, 0, itemsAmount - 1);
+	stop = clock();
+	printTimeInterval(start, stop, "mergeSort exec time");
+	safeFree(mergeSortArray);
+
+	// shellSort
+	start = clock();
+	shellSort(shellSortArray, itemsAmount);
+	stop = clock();
+	printTimeInterval(start, stop, "shellSort exec time");
+	safeFree(shellSortArray);
+
+	// heapSort
+	start = clock();
+	heapSort(heapSortArray, itemsAmount);
+	stop = clock();
+	printTimeInterval(start, stop, "heapSort exec time");
+	safeFree(heapSortArray);
+
+	// quickSort
+	start = clock();
+	quickSort(quickSortArray, 0, itemsAmount - 1);
+	stop = clock();
+	printTimeInterval(start, stop, "quickSort exec time");
+	safeFree(quickSortArray);
 
 	return 0;
 }

@@ -1,0 +1,14 @@
+
+bubbleSort exec time: 0.12769
+
+selectionSort exec time: 0.11310
+
+insertionSort exec time: 0.00005
+
+mergeSort exec time: 0.00096
+
+shellSort exec time: 0.00044
+
+heapSort exec time: 0.00158
+
+quickSort exec time: 0.00072
