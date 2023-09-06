@@ -41,21 +41,21 @@
 	sw $t9, 4($t8) # MEM[$t8+4] = $t9
 
 	# print string
-	li $v0, 4 # load immediate string (4)
+	li $v0, 4 # load immediate syscall to print_string (4) on '$v0' register
 	la $a0, msg # load address
 	syscall
 	li $v0, 4
 	la $a0, linebreak
 	syscall
 	# print integer
-	li $v0, 1 # load immediate integer (1)
+	li $v0, 1 # load immediate syscall to print_integer (1)
 	lw $a0, date # load world
 	syscall
 	li $v0, 4
 	la $a0, linebreak
 	syscall
 	# print float
-	li $v0, 2 # load immediate float (2)
+	li $v0, 2 # load immediate syscall to print_float (2)
 	lwc1 $f12, pi # load word into coprocessor 1
 	syscall
 	li $v0, 4
