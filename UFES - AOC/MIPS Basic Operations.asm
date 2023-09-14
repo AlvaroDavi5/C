@@ -1,10 +1,25 @@
 # MIPS 32
-  # $zero - zero constant register
-  # $v0, $v1 - function returns registers
-  # $a0, ..., $a3 - function arguments registers
-  # $ra - return address previously the function register
-  # $s0, ..., $s8 - storage registers
-  # $t0, ..., $t9 - temporary registers
+  # Registers:
+    # $zero - zero constant register
+    # $v0, $v1 - function returns registers
+    # $a0, ..., $a3 - function arguments registers
+    # $ra - return address previously the function register
+    # $s0, ..., $s8 - storage registers
+    # $t0, ..., $t9 - temporary registers
+
+  # Memory Layout Segments:
+    # Kernel Level
+      # Reserved
+      # Memory Mapped IO: Store memory mapped registers for IO devices
+      # Data
+      # Text
+      # Reserved (last address)
+    # Program Level
+      # Text: Store user level code/instructions
+      # Data: Store static data (data know at compile time) used by the user program
+      # Heap [dynamic]: Store dynamic data (data allocated during runtime) used by the user program
+      # Stack [dynamic]: Store temporary data (parameters, local variables, return address for function/subroutine calls) used by the user program
+      # Free: Unallocated, generally used by Heap or Stack
 
 
 .data # data segment
@@ -40,7 +55,7 @@
 	la $t8, var1 # $t8 = var1.addr
 	lw $t9, var1 # $t9 = var1.word
 	sw $s0, 0($t8) # MEM[$t8] = $s0
-	sw $t9, 4($t8) # MEM[$t8+4] = $t9
+	sw $t9, 4($t8) # MEM[$t8+4] = $t9, increased 4 to access next word because each word has 4 bytes (32/8 [bits] = 4 [bytes])
 
 	# SYSTEM CALLS OPERATIONS
 	# print string
