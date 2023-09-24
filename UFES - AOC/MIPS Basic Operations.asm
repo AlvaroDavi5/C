@@ -68,10 +68,10 @@
 	li $t0, 5 # load value '5' on $t0 register
 	li $t1, 13
 	add $s0, $t0, $t1 # store add result on $s0 register, $s0 = $t0 + $t1
-	la $t2, ($s0)
+	la $t2, 0($s0)
 	subi $s0, $s0, 3 # $s0 -= 3
 	li $t4, 2
-	la $t3, ($s0)
+	la $t3, 0($s0)
 	mul $t5, $t3, $t4 # $t5 = $t3 * $t4
 	li $t6, 7
 	div $t7, $t5, $t6 # $t7 = $t5 / $t6
