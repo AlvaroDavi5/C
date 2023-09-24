@@ -7,7 +7,7 @@
       # $a0, ..., $a3 - function arguments registers
       # $t0, ..., $t9 - temporary registers
       # $s0, ..., $s7 - storage registers
-      # $f0, ..., $f31 - floating values registers (coprocessor)
+      # $f0, ..., $f31 - floating values registers (coprocessor 1)
       # $k0, $k1 - kernel interruption/exception registers
       # $gp - global/static data address pointer register
       # $sp - stack address pointer register
@@ -81,35 +81,39 @@
 	move $s0, $t8 # $t8 → $s0
 
 	# MEMORY LOAD/STORE OPERATIONS
+	 # load address
 	la $t8, var1 # $t8 = var1.addr
+	# load word
 	lw $t9, var1 # $t9 = var1.word
+	# store word
 	sw $s0, 0($t8) # MEM[$t8] = $s0
 	sw $t9, 4($t8) # MEM[$t8+4] = $t9, increased 4 to access next word because each word has 4 bytes (32/8 [bits] = 4 [bytes])
 
 	# SYSTEM CALLS OPERATIONS
 	# print string
 	li $v0, 4 # load immediate syscall to print_string (4) on '$v0' register
-	la $a0, msg # load address
+	la $a0, msg
 	syscall
 	li $v0, 4
 	la $a0, linebreak
 	syscall
 	# print integer
 	li $v0, 1 # load immediate syscall to print_int (1)
-	lw $a0, date # load world
+	lw $a0, date
 	syscall
 	li $v0, 4
 	la $a0, linebreak
 	syscall
 	# print float
 	li $v0, 2 # load immediate syscall to print_float (2)
-	lwc1 $f12, pi # load word into coprocessor 1
+	lwc1 $f12, pi # load word from coprocessor 1
 	syscall
 	li $v0, 4
 	la $a0, linebreak
 	syscall
 
-	read_input: li $v0, 4
+	read_input:
+	li $v0, 4
 	la $a0, read_int_msg
 	syscall
 	# read integer
@@ -118,7 +122,7 @@
 	add $s3, $v0, $zero
 
 	# CONDITION FLUX OPERATIONS
-	bne $s3, $s0, s3_not_equal_s0 # flux changed by label 's0_not_equal_v0'
+	bne $s3, $s0, s3_not_equal_s0 # flux changed by label 's3_not_equal_s0'
 	# conventional flux
 	li $v0, 4
 	la $a0, done_msg
@@ -129,5 +133,6 @@
 	s3_not_equal_s0: j read_input # jump again to 'read_input' label
 
 	# end program
-	exit: li $v0, 10 # load immediate syscall to exit (10)
+	exit:
+	li $v0, 10 # load immediate syscall to exit (10)
 	syscall # system call
