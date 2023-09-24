@@ -1,11 +1,36 @@
 # MIPS 32
   # Registers:
-    # $zero - zero constant register
-    # $v0, $v1 - function returns registers
-    # $a0, ..., $a3 - function arguments registers
-    # $ra - return address previously the function register
-    # $s0, ..., $s8 - storage registers
-    # $t0, ..., $t9 - temporary registers
+    # All Registers:
+      # $zero - zero constant register
+      # $at - assembler temporary register
+      # $v0, $v1 - function return registers
+      # $a0, ..., $a3 - function arguments registers
+      # $t0, ..., $t9 - temporary registers
+      # $s0, ..., $s7 - storage registers
+      # $f0, ..., $f31 - floating values registers (coprocessor)
+      # $k0, $k1 - kernel interruption/exception registers
+      # $gp - global/static data address pointer register
+      # $sp - stack address pointer register
+      # $fp - frame (stack current procedure) address pointer register
+      # $ra - return address for previous instruction register
+      # lo - low-order (integer part from the division) register
+      # hi - high-order (rest of the division) register
+      # pc - current/next instruction address pointer register
+    # Registers are enumerated: $zero=$0, $t0=8, $s0=16...
+
+  # Syscall Codes:
+    # Print
+      # 1 - int
+      # 2 - float
+      # 3 - double
+      # 4 - string
+    # Read
+      # 5 - int
+      # 6 - float
+      # 7 - double
+      # 8 - string
+    # Exit
+      # 10 - exit
 
   # Memory Layout Segments:
     # Kernel Level
@@ -16,10 +41,14 @@
       # Reserved (last address)
     # Program Level
       # Text: Store user level code/instructions
-      # Data: Store static data (data know at compile time) used by the user program
+      # Data: Store static/global data (data know at compile time) used by the user program
       # Heap [dynamic]: Store dynamic data (data allocated during runtime) used by the user program
       # Stack [dynamic]: Store temporary data (parameters, local variables, return address for function/subroutine calls) used by the user program
       # Free: Unallocated, generally used by Heap or Stack
+
+  # Instructions Encoding:
+    #  operation      src reg      src reg       dest reg      shift amount     ALU function
+    # op (6 bits) | rs (5 bits) | rt (5 bits) | rd (5 bits) | shamt (5 bits) | funct (6 bits)
 
 
 .data # data segment
@@ -46,8 +75,8 @@
 	mul $t5, $t3, $t4 # $t5 = $t3 * $t4
 	li $t6, 7
 	div $t7, $t5, $t6 # $t7 = $t5 / $t6
-	mflo $s1 # move from low-order (integer part from the division)
-	mfhi $s2 # move from high-order (rest of the division)
+	mflo $s1 # move from 'lo' register
+	mfhi $s2 # move from 'hi' register
 	sll $t8, $t5, 1 # $t8 = $t5 * 2^1, $t8 = $t5 << 1
 	move $s0, $t8 # $t8 → $s0
 
