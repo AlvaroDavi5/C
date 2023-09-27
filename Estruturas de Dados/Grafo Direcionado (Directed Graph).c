@@ -3,7 +3,9 @@
 #include <stdbool.h>
 
 #define MAX_DISTANCE 999999
-#define isAValidWeight(w) (w > 0 && w < MAX_DISTANCE)
+#define UNKNOW 0
+#define VISITED 1
+#define FINISHED 2
 
 struct graph
 {
@@ -17,7 +19,7 @@ Graph *createGraph(int verticesAmount);
 void destroyGraph(Graph *graph);
 bool addEdge(Graph *graph, unsigned int src, unsigned int dest, float weight);
 bool hasEdge(Graph *graph, unsigned int src, unsigned int dest);
-void depthFirstSearch(Graph *graph, int vertex, bool *visited);
+void depthFirstSearch(Graph *graph, int vertex, unsigned int *visitedVertices);
 void displayGraphEdges(Graph *graph);
 void displayGraphTable(Graph *graph);
 
@@ -28,17 +30,16 @@ int main()
 	addEdge(graph, 0, 1, 1.0);
 	addEdge(graph, 0, 2, 2.0);
 	addEdge(graph, 1, 3, 2.3);
-	addEdge(graph, 2, 4, 2.0);
 	addEdge(graph, 3, 4, 1.2);
 	addEdge(graph, 4, 1, 3.1);
-	addEdge(graph, 4, 0, 4.5);
+	addEdge(graph, 4, 2, 4.5);
 
 	displayGraphTable(graph);
 	displayGraphEdges(graph);
 
-	bool visitedVertices[graph->verticesAmount];
+	unsigned int visitedVertices[graph->verticesAmount];
 	for (int i = 0; i < graph->verticesAmount; i++)
-		visitedVertices[i] = false;
+		visitedVertices[i] = UNKNOW;
 
 	depthFirstSearch(graph, 0, visitedVertices);
 
@@ -128,18 +129,23 @@ bool hasEdge(Graph *graph, unsigned int src, unsigned int dest)
 	return false;
 }
 
-void depthFirstSearch(Graph *graph, int vertex, bool *visited)
+void depthFirstSearch(Graph *graph, int vertex, unsigned int *visitedVertices)
 {
-	visited[vertex] = true;
+	visitedVertices[vertex] = VISITED;
 	printf("Visited vertex: %d\n", vertex);
 
 	for (int i = 0; i < graph->verticesAmount; i++)
 	{
-		if (!visited[i] && isAValidWeight(graph->edges[vertex][i]))
+		float w = graph->edges[vertex][i];
+		if (w > 0 && w < MAX_DISTANCE)
 		{
-			depthFirstSearch(graph, i, visited);
+			if (visitedVertices[i] < VISITED)
+				depthFirstSearch(graph, i, visitedVertices);
+			else if (visitedVertices[vertex] < FINISHED)
+				printf("Founded cycle\n");
 		}
 	}
+	visitedVertices[vertex] = FINISHED;
 }
 
 void displayGraphEdges(Graph *graph)
@@ -162,8 +168,15 @@ void displayGraphEdges(Graph *graph)
 void displayGraphTable(Graph *graph)
 {
 	printf("Table:\n");
+
+	printf("   ");
+	for (int i = 0; i < graph->verticesAmount; i++)
+		printf(" %d | ", i);
+	printf("\n");
+
 	for (int i = 0; i < graph->verticesAmount; i++)
 	{
+		printf("%d |", i);
 		for (int j = 0; j < graph->verticesAmount; j++)
 		{
 			float w = graph->edges[i][j];
