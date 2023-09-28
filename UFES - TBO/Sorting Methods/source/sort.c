@@ -1,23 +1,25 @@
 #include "../include/sort.h"
 
+// O(N^2)
 void bubbleSort(Item *array, size_t size)
 {
-	for (size_t i = 0; i < size - 1; i++)
+	for (size_t i = 0; i < size - 1; i++) // O(N)
 	{
-		for (size_t j = 0; j < (size - i) - 1; j++)
+		for (size_t j = 0; j < (size - i) - 1; j++) // O(N-1) == O(N)
 		{
 			compSwap(array[j], array[j + 1]);
 		}
 	}
 }
 
+// O(N^2)
 void selectionSort(Item *array, size_t size)
 {
-	for (size_t i = 0; i < size; i++)
+	for (size_t i = 0; i < size; i++) // O(N)
 	{
 		size_t minUnsortedIndex = i;
 
-		for (size_t j = i + 1; j < size; j++)
+		for (size_t j = i + 1; j < size; j++) // O(N-1) == O(N)
 		{
 			if (less(array[j], array[minUnsortedIndex]))
 				minUnsortedIndex = j;
@@ -28,14 +30,15 @@ void selectionSort(Item *array, size_t size)
 	}
 }
 
+// O(N^2)
 void insertionSort(Item *array, size_t size)
 {
-	for (size_t i = 1; i < size; i++)
+	for (size_t i = 1; i < size; i++) // O(N)
 	{
 		Item memory = array[i];
 		int j = i - 1;
 
-		while ((j >= 0) && less(memory, array[j]))
+		while ((j >= 0) && less(memory, array[j])) // O(N-1) == O(N)
 		{
 			array[j + 1] = array[j];
 			j--;
@@ -44,6 +47,7 @@ void insertionSort(Item *array, size_t size)
 	}
 }
 
+// 3O(N) == O(N)
 void _merge(Item *array, size_t left, size_t middle, size_t right)
 {
 	size_t i, j, k;
@@ -52,15 +56,16 @@ void _merge(Item *array, size_t left, size_t middle, size_t right)
 
 	Item leftArray[size1], rightArray[size2];
 
-	for (i = 0; i < size1; i++)
+	// 2O(N/2) == O(N)
+	for (i = 0; i < size1; i++) // O(N/2)
 		leftArray[i] = array[left + i];
-	for (j = 0; j < size2; j++)
+	for (j = 0; j < size2; j++) // O(N/2)
 		rightArray[j] = array[middle + 1 + j];
 
 	i = 0;
 	j = 0;
 	k = left;
-	while (i < size1 && j < size2)
+	while (i < size1 && j < size2) // O(N/2) + O(N/2) == 2O(N/2) == O(N)
 	{
 		if (leftArray[i] <= rightArray[j])
 		{
@@ -75,14 +80,14 @@ void _merge(Item *array, size_t left, size_t middle, size_t right)
 		k++;
 	}
 
-	while (i < size1)
+	// 2O(N/2) == O(N)
+	while (i < size1) // O(N/2)
 	{
 		array[k] = leftArray[i];
 		i++;
 		k++;
 	}
-
-	while (j < size2)
+	while (j < size2) // O(N/2)
 	{
 		array[k] = rightArray[j];
 		j++;
@@ -90,29 +95,32 @@ void _merge(Item *array, size_t left, size_t middle, size_t right)
 	}
 }
 
+// O(lg N) * O(N) == O(N * lg N)
 void mergeSort(Item *array, size_t left, size_t right)
 {
 	if (left < right)
 	{
 		size_t middle = left + (right - left) / 2;
 
+		// O(lg N)
 		mergeSort(array, left, middle);
 		mergeSort(array, middle + 1, right);
 
-		_merge(array, left, middle, right);
+		_merge(array, left, middle, right); // O(N)
 	}
 }
 
+// O(lg N) * O(N^2) == O(N^2)
 void shellSort(Item *array, size_t size)
 {
-	for (size_t gap = size / 2; gap > 0; gap /= 2)
+	for (size_t gap = size / 2; gap > 0; gap /= 2) // O(lg N)
 	{
-		for (size_t i = gap; i < size; i++)
+		for (size_t i = gap; i < size; i++) // O(N-1) == O(N)
 		{
 			size_t j;
 			Item aux = array[i];
 
-			for (j = i; j >= gap && array[j - gap] > aux; j -= gap)
+			for (j = i; j >= gap && array[j - gap] > aux; j -= gap) // O(N-1) == O(N)
 			{
 				array[j] = array[j - gap];
 			}
@@ -122,6 +130,7 @@ void shellSort(Item *array, size_t size)
 	}
 }
 
+// O(lg N)
 void _heapify(Item *array, size_t size, size_t i)
 {
 	size_t largest = i;
@@ -140,24 +149,28 @@ void _heapify(Item *array, size_t size, size_t i)
 	}
 }
 
+// 2O(N * lg N) == O(N * lg N)
 void heapSort(Item *array, size_t size)
 {
-	for (int i = size / 2 - 1; i >= 0; i--)
-		_heapify(array, size, i);
+	// O(lg N) * O(N/2) == O(N * lg N)
+	for (int i = size / 2 - 1; i >= 0; i--) // O(N/2-1) == O(N/2)
+		_heapify(array, size, i); // O(lg N)
 
-	for (size_t i = size - 1; i > 0; i--)
+	// O(lg N) * O(N) == O(N * lg N)
+	for (size_t i = size - 1; i > 0; i--) // O(N-1) == O(N)
 	{
 		swap(array[0], array[i]);
-		_heapify(array, i, 0);
+		_heapify(array, i, 0); // O(lg N)
 	}
 }
 
+// O(N)
 size_t _partition(Item *array, size_t begin, size_t end)
 {
 	size_t pivotIndex = begin;
 	Item pivotElement = array[end];
 
-	for (size_t i = begin; i < end; i++)
+	for (size_t i = begin; i < end; i++) // O(N)
 	{
 		if (array[i] <= pivotElement)
 		{
@@ -171,20 +184,23 @@ size_t _partition(Item *array, size_t begin, size_t end)
 	return pivotIndex;
 }
 
+// O(N)
 size_t _random_partition(Item *array, size_t begin, size_t end)
 {
-	size_t pivotIndex = (rand() % (end - begin + 1)) + begin;
+	size_t pivotIndex = (rand() % (end - begin + 1)) + begin; // O(1)
 
 	swap(array[pivotIndex], array[end]);
-	return _partition(array, begin, end);
+	return _partition(array, begin, end); // O(N)
 }
 
+// O(lg N) * O(N) == O(N * lg N)
 void quickSort(Item *array, size_t begin, size_t end)
 {
 	if (begin < end)
 	{
-		size_t pivotIndex = _random_partition(array, begin, end);
+		size_t pivotIndex = _random_partition(array, begin, end); // O(N)
 
+		// O(lg N)
 		quickSort(array, begin, pivotIndex - 1);
 		quickSort(array, pivotIndex + 1, end);
 	}
