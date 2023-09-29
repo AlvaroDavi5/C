@@ -81,7 +81,7 @@
 	move $s0, $t8 # $t8 → $s0
 
 	# MEMORY LOAD/STORE OPERATIONS
-	 # load address
+	# load address
 	la $t8, var1 # $t8 = var1.addr
 	# load word
 	lw $t9, var1 # $t9 = var1.word
