@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-
 struct node
 {
 	char *name;
@@ -10,43 +9,37 @@ struct node
 	struct node *right;
 };
 typedef struct node Node;
-typedef Node* Tree;
+typedef Node *Tree;
 
-
-Node * newNode(char *name, Node *left, Node *right);
+Node *newNode(char *name, Node *left, Node *right);
 int itBelongs(Node *node, char *name);
 int leafsCount(Node *node);
 int occurrencesCount(Node *node, char *name);
 int height(Node *node);
-void displayPreOrder(Node *node); // starts at the root and goes first to the left branch and then to the right branch
-void displayInOrder(Node *node); // starts on the left branch, goes through the root and goes to the right branch
+void displayPreOrder(Node *node);	 // starts at the root and goes first to the left branch and then to the right branch
+void displayInOrder(Node *node);	 // starts on the left branch, goes through the root and goes to the right branch
 void displayPostOrder(Node *node); // starts on the left branch and goes first to the right branch and then to the root
 void FreeNode(Node *node);
 int isEmpty(Node *node);
 
-
-int main ()
+int main()
 {
 	char *name = "e";
 	Tree binTree = NULL;
 
 	binTree = newNode(
-		"root",
-		newNode(
-			"a",
-			newNode("c", NULL, NULL),
-			NULL
-		),
-		newNode(
-			"b",
-			newNode("d", NULL, NULL),
+			"root",
 			newNode(
-				"e",
-				NULL,
-				newNode("f", NULL, NULL)
-			)
-		)
-	);
+					"a",
+					newNode("c", NULL, NULL),
+					NULL),
+			newNode(
+					"b",
+					newNode("d", NULL, NULL),
+					newNode(
+							"e",
+							NULL,
+							newNode("f", NULL, NULL))));
 
 	printf("\nElements in InOrder: ");
 	displayInOrder(binTree);
@@ -65,9 +58,9 @@ int main ()
 	return 0;
 }
 
-Node * newNode(char *name, Node *left, Node *right)
+Node *newNode(char *name, Node *left, Node *right)
 {
-	Node *node = (Node *) malloc(sizeof(Node));
+	Node *node = (Node *)malloc(sizeof(Node));
 
 	node->name = strdup(name);
 	node->left = left;
@@ -82,8 +75,8 @@ int itBelongs(Node *node, char *name)
 		return 0;
 	else
 		return strcmp(node->name, name) == 0 ||
-		itBelongs(node->left, name) ||
-		itBelongs(node->right, name);	
+					 itBelongs(node->left, name) ||
+					 itBelongs(node->right, name);
 }
 
 int leafsCount(Node *node)
@@ -122,16 +115,16 @@ int height(Node *node)
 		int rh = height(node->right);
 
 		if (lh >= rh)
-			return lh+1; // compense '-1' from empty nodes (last/leaf nodes)
+			return lh + 1; // compense '-1' from empty nodes (last/leaf nodes)
 		else
-			return rh+1;
+			return rh + 1;
 	}
 }
 
 void displayInOrder(Node *node)
 {
 	printf("<");
-	if(isEmpty(node))
+	if (isEmpty(node))
 	{
 		printf(" ");
 	}
@@ -147,7 +140,7 @@ void displayInOrder(Node *node)
 void displayPreOrder(Node *node)
 {
 	printf("<");
-	if(isEmpty(node))
+	if (isEmpty(node))
 	{
 		printf(" ");
 	}
@@ -163,7 +156,7 @@ void displayPreOrder(Node *node)
 void displayPostOrder(Node *node)
 {
 	printf("<");
-	if(isEmpty(node))
+	if (isEmpty(node))
 	{
 		printf(" ");
 	}
@@ -178,7 +171,7 @@ void displayPostOrder(Node *node)
 
 void FreeNode(Node *node)
 {
-	if(isEmpty(node))
+	if (isEmpty(node))
 		return;
 	else
 	{

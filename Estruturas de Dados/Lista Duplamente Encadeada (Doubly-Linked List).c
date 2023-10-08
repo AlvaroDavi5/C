@@ -1,13 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define Data int
 
-typedef int (* fptrCompare)(int, int);
+typedef int (*fptrCompare)(int, int);
 
 struct node
 {
 	int index;
-	int data;
+	Data data;
 	struct node *prev;
 	struct node *next; // two navigation Node pointers...
 };
@@ -22,19 +23,17 @@ struct list
 };
 typedef struct list LinkedList;
 
-
-LinkedList * initLinkedList(LinkedList *list);
-void addNewHead(LinkedList *list, int value);
-void addNewTail(LinkedList *list, int value);
-Node * getNode(LinkedList *list, fptrCompare compareFunction, int position);
+LinkedList *initLinkedList(LinkedList *list);
+void addNewHead(LinkedList *list, Data value);
+void addNewTail(LinkedList *list, Data value);
+Node *getNode(LinkedList *list, fptrCompare compareFunction, int position);
 void insertPrevNode(LinkedList *list, Node *node);
 void insertNextNode(LinkedList *list, Node *node);
-void insertData(Node *node, int value);
+void insertData(Node *node, Data value);
 void deleteNode(LinkedList *list, Node *node);
 void destroyLinkedList(LinkedList *list);
 void displayLinkedList(LinkedList *list);
 int compareData(int d1, int d2);
-
 
 int main()
 {
@@ -59,65 +58,64 @@ int main()
 		printf("\nType a number: ");
 		scanf("%d", &op);
 
-		switch(op)
+		switch (op)
 		{
-			case 0:
-				destroyLinkedList(my_list);
-				exit(0);
-				break;
-			case 1:
-				printf("Type a value: ");
-				scanf("%d", &value);
-				addNewHead(my_list, value);
-				break;
-			case 2:
-				printf("Type a value: ");
-				scanf("%d", &value);
-				addNewTail(my_list, value);
-				break;
-			case 3:
-				printf("Type a node position (starting at zero): ");
-				scanf("%d", &value);
-				my_node = getNode(my_list, (fptrCompare)compareData, value);
-				printf("Selected!\n");
-				break;
-			case 4:
-				printf("Type '1' to insert before and '2' to insert after: ");
-				scanf("%d", &value);
-				if (value == 1)
-					insertPrevNode(my_list, my_node);
-				else if (value == 2)
-					insertNextNode(my_list, my_node);
-				else
-					printf("Invalid option!");
-				break;
-			case 5:
-				printf("Type a value: ");
-				scanf("%d", &value);
-				insertData(my_node, value);
-				break;
-			case 6:
-				deleteNode(my_list, my_node);
-				my_node = NULL;
-				break;
-			case 7:
-				printf("\n\n");
-				displayLinkedList(my_list);
-				printf("\n\n");
-				break;
-			default:
-				printf("\nInvalid option!\n");
-				break;
+		case 0:
+			destroyLinkedList(my_list);
+			exit(0);
+			break;
+		case 1:
+			printf("Type a value: ");
+			scanf("%d", &value);
+			addNewHead(my_list, value);
+			break;
+		case 2:
+			printf("Type a value: ");
+			scanf("%d", &value);
+			addNewTail(my_list, value);
+			break;
+		case 3:
+			printf("Type a node position (starting at zero): ");
+			scanf("%d", &value);
+			my_node = getNode(my_list, (fptrCompare)compareData, value);
+			printf("Selected!\n");
+			break;
+		case 4:
+			printf("Type '1' to insert before and '2' to insert after: ");
+			scanf("%d", &value);
+			if (value == 1)
+				insertPrevNode(my_list, my_node);
+			else if (value == 2)
+				insertNextNode(my_list, my_node);
+			else
+				printf("Invalid option!");
+			break;
+		case 5:
+			printf("Type a value: ");
+			scanf("%d", &value);
+			insertData(my_node, value);
+			break;
+		case 6:
+			deleteNode(my_list, my_node);
+			my_node = NULL;
+			break;
+		case 7:
+			printf("\n\n");
+			displayLinkedList(my_list);
+			printf("\n\n");
+			break;
+		default:
+			printf("\nInvalid option!\n");
+			break;
 		}
 	} while (op != 0);
 
 	return 0;
 }
 
-
-LinkedList * initLinkedList(LinkedList *list)
+LinkedList *initLinkedList(LinkedList *list)
 {
-	list = (LinkedList *) malloc(sizeof(LinkedList));
+	list = (LinkedList *)malloc(sizeof(LinkedList));
 	list->size = 0;
 	list->head = NULL;
 	list->current = NULL;
@@ -126,9 +124,9 @@ LinkedList * initLinkedList(LinkedList *list)
 	return list;
 }
 
-void addNewHead(LinkedList *list, int value)
+void addNewHead(LinkedList *list, Data value)
 {
-	Node *node = (Node *) malloc(sizeof(Node));
+	Node *node = (Node *)malloc(sizeof(Node));
 	node->data = value;
 	node->prev = NULL;
 
@@ -157,9 +155,9 @@ void addNewHead(LinkedList *list, int value)
 	}
 }
 
-void addNewTail(LinkedList *list, int value)
+void addNewTail(LinkedList *list, Data value)
 {
-	Node *node = (Node *) malloc(sizeof(Node));
+	Node *node = (Node *)malloc(sizeof(Node));
 
 	node->data = value;
 	node->next = NULL;
@@ -179,7 +177,7 @@ void addNewTail(LinkedList *list, int value)
 	list->size += 1;
 }
 
-Node * getNode(LinkedList *list, fptrCompare compareFunction, int position)
+Node *getNode(LinkedList *list, fptrCompare compareFunction, int position)
 {
 	list->current = list->head;
 
@@ -198,7 +196,7 @@ Node * getNode(LinkedList *list, fptrCompare compareFunction, int position)
 
 void insertPrevNode(LinkedList *list, Node *node)
 {
-	Node *newNode = (Node *) malloc(sizeof(Node));
+	Node *newNode = (Node *)malloc(sizeof(Node));
 
 	newNode->data = 0;
 	newNode->prev = node->prev;
@@ -220,7 +218,7 @@ void insertPrevNode(LinkedList *list, Node *node)
 		list->current = newNode->next;
 		for (int i = newNode->index; i < list->size; i++)
 		{
-			(list->current)->index = i+1;
+			(list->current)->index = i + 1;
 			list->current = (list->current)->next;
 
 			if (list->current == NULL)
@@ -236,7 +234,7 @@ void insertPrevNode(LinkedList *list, Node *node)
 
 void insertNextNode(LinkedList *list, Node *node)
 {
-	Node *newNode = (Node *) malloc(sizeof(Node));
+	Node *newNode = (Node *)malloc(sizeof(Node));
 
 	newNode->data = 0;
 	newNode->prev = node;
@@ -258,7 +256,7 @@ void insertNextNode(LinkedList *list, Node *node)
 		list->current = newNode->next;
 		for (int i = newNode->index; i < list->size; i++)
 		{
-			(list->current)->index = i+1;
+			(list->current)->index = i + 1;
 			list->current = (list->current)->next;
 
 			if (list->current == NULL)
@@ -272,7 +270,7 @@ void insertNextNode(LinkedList *list, Node *node)
 	list->size += 1;
 }
 
-void insertData(Node *node, int value)
+void insertData(Node *node, Data value)
 {
 	node->data = value;
 }
@@ -362,4 +360,3 @@ int compareData(int d1, int d2)
 		return -1;
 	}
 }
-

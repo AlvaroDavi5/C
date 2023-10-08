@@ -1,59 +1,56 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
 #define REC 1
 #define TRI 2
 #define CIR 3
 float pi = 3.141529;
 
-
-typedef struct linear_shape Rectangle;
-typedef struct linear_shape Triangle;
-typedef struct circular_shape Circle;
 struct linear_shape
 {
 	float height;
 	float base;
 	float area;
 };
+typedef struct linear_shape Rectangle;
+typedef struct linear_shape Triangle;
+
 struct circular_shape
 {
 	float ray;
 	float area;
 };
+typedef struct circular_shape Circle;
 
-typedef struct node Node;
 struct node
 {
 	int type;
 	void *item; // void pointer
-	Node *next;
+	struct node *next;
 };
+typedef struct node Node;
 
-typedef struct list HetList;
 struct list
 {
 	Node *head;
 	Node *current;
 	Node *tail;
 };
+typedef struct list HetList;
 
-
-HetList * initList(void);
+HetList *initList(void);
 void insShapeC(HetList *list, Circle *shape);
 void insShapeRT(HetList *list, Rectangle *shape, int type);
 void printList(HetList *list);
 void destroyList(HetList *list);
 
-Circle * initShapeC(float r);
-Rectangle * initShapeRT(float h, float b);
+Circle *initShapeC(float r);
+Rectangle *initShapeRT(float h, float b);
 void printShapeC(Circle *shape);
 void printShapeRT(Rectangle *shape);
 float returnRay(Circle *shape);
 float returnBase(Rectangle *shape);
 float returnHeight(Rectangle *shape);
-
 
 int main()
 {
@@ -80,10 +77,9 @@ int main()
 	return 0;
 }
 
-
-HetList * initList(void)
+HetList *initList(void)
 {
-	HetList *list = (HetList *) malloc(sizeof(HetList));
+	HetList *list = (HetList *)malloc(sizeof(HetList));
 
 	list->head = NULL;
 	list->current = NULL;
@@ -94,7 +90,7 @@ HetList * initList(void)
 
 void insShapeC(HetList *list, Circle *shape)
 {
-	Node *node = (Node *) malloc(sizeof(Node));
+	Node *node = (Node *)malloc(sizeof(Node));
 
 	node->type = CIR;
 	node->item = shape;
@@ -114,7 +110,7 @@ void insShapeC(HetList *list, Circle *shape)
 
 void insShapeRT(HetList *list, Rectangle *shape, int type)
 {
-	Node *node = (Node *) malloc(sizeof(Node));
+	Node *node = (Node *)malloc(sizeof(Node));
 
 	if (type == 2)
 		node->type = TRI;
@@ -146,28 +142,28 @@ void printList(HetList *list)
 		{
 			printf("Circle: ");
 
-			if (((Circle *) index->item)->area == 0.00)
-				((Circle *) index->item)->area = pi * returnRay((Circle *) index->item)*returnRay((Circle *) index->item);
+			if (((Circle *)index->item)->area == 0.00)
+				((Circle *)index->item)->area = pi * returnRay((Circle *)index->item) * returnRay((Circle *)index->item);
 
-			printShapeC((Circle *) index->item); // type cast (changing void pointer)
+			printShapeC((Circle *)index->item); // type cast (changing void pointer)
 		}
 		if (index->type == REC)
 		{
 			printf("Rectangle: ");
 
-			if (((Rectangle *) index->item)->area == 0.00)
-				((Rectangle *) index->item)->area = returnBase((Rectangle *) index->item) * returnHeight((Rectangle *) index->item);
+			if (((Rectangle *)index->item)->area == 0.00)
+				((Rectangle *)index->item)->area = returnBase((Rectangle *)index->item) * returnHeight((Rectangle *)index->item);
 
-			printShapeRT((Rectangle *) index->item);
+			printShapeRT((Rectangle *)index->item);
 		}
 		if (index->type == TRI)
 		{
 			printf("Triangle: ");
 
-			if (((Triangle *) index->item)->area == 0.00)
-				((Triangle *) index->item)->area = (returnBase((Triangle *) index->item) * returnHeight((Triangle *) index->item)) / 2;
+			if (((Triangle *)index->item)->area == 0.00)
+				((Triangle *)index->item)->area = (returnBase((Triangle *)index->item) * returnHeight((Triangle *)index->item)) / 2;
 
-			printShapeRT((Triangle *) index->item);
+			printShapeRT((Triangle *)index->item);
 		}
 	}
 }
@@ -187,9 +183,9 @@ void destroyList(HetList *list)
 	free(list);
 }
 
-Circle * initShapeC(float r)
+Circle *initShapeC(float r)
 {
-	Circle *shape = (Circle *) malloc(sizeof(Circle));
+	Circle *shape = (Circle *)malloc(sizeof(Circle));
 
 	shape->ray = r;
 	shape->area = 0.00;
@@ -197,9 +193,9 @@ Circle * initShapeC(float r)
 	return shape;
 }
 
-Rectangle * initShapeRT(float h, float b)
+Rectangle *initShapeRT(float h, float b)
 {
-	Rectangle *shape = (Rectangle *) malloc(sizeof(Rectangle));
+	Rectangle *shape = (Rectangle *)malloc(sizeof(Rectangle));
 
 	shape->height = h;
 	shape->base = b;
@@ -232,4 +228,3 @@ float returnHeight(Rectangle *shape)
 {
 	return shape->height;
 }
-

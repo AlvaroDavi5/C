@@ -1,14 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define Item int
+
 #define TB_SIZE 31
 
-
-void initHashTable(int *table, int size);
-void insert(int *table, int value);
-int search(int *table, int key);
+void initHashTable(int *table, unsigned int size);
+void insert(int *table, Item value);
+int search(int *table, Item value);
 void print(int *table, int size);
-
 
 int main()
 {
@@ -17,7 +17,7 @@ int main()
 
 	while (n >= 0)
 	{
-		printf("Type a number n >= 0 to insert and n < 0 to exit: ");
+		printf("Type a number N between 0 and %d to insert and N < 0 to exit: ", TB_SIZE);
 		scanf("%d", &n);
 		insert(hash_table, n);
 	}
@@ -30,37 +30,37 @@ int main()
 	return 0;
 }
 
-void initHashTable(int *table, int size)
+void initHashTable(int *table, unsigned int size)
 {
 	for (int i = 0; i < size; i++)
 		table[i] = 0;
 }
 
-int hash(int key, int size)
+int hash(int key, unsigned int size)
 {
 	return (key % size);
 }
 
-void insert(int *table, int value)
+void insert(int *table, Item value)
 {
 	int id = hash(value, TB_SIZE);
 
 	while (table[id] != 0)
 	{
-		id = hash(id+1, TB_SIZE);
+		id = hash(id + 1, TB_SIZE);
 	}
 	table[id] = value;
 }
 
-int search(int *table, int key)
+int search(int *table, Item value)
 {
-	int id = hash(key, TB_SIZE);
+	int id = hash(value, TB_SIZE);
 	while (table[id] != 0)
 	{
-		if (table[id] == key)
+		if (table[id] == value)
 			return table[id];
 		else
-			id = hash(id+1, TB_SIZE);
+			id = hash(id + 1, TB_SIZE);
 	}
 	return 0;
 }
@@ -72,4 +72,3 @@ void print(int *table, int size)
 		printf("%d = %d\n", i, table[i]);
 	}
 }
-
