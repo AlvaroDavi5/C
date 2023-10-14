@@ -16,8 +16,5 @@ typedef int Item;
 		A = B;         \
 		B = aux;       \
 	}
-#define compSwap(A, B) \
-	if (less(B, A))      \
-	swap(A, B)
 
 #endif

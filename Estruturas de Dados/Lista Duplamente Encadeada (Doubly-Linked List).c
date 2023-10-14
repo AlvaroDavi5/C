@@ -45,7 +45,7 @@ int main()
 
 	do
 	{
-		printf("\n------------- SELECT A OPTION -------------\n");
+		printf("\n------------- SELECT AN OPTION -------------\n");
 		printf("0. Exit\n");
 		printf("1. Add New Head\n");
 		printf("2. Add New Tail\n");

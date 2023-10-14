@@ -12,6 +12,7 @@ typedef struct node Node;
 typedef Node *Tree;
 
 Node *newNode(char *name, Node *left, Node *right);
+int isEmpty(Node *node);
 int itBelongs(Node *node, char *name);
 int leafsCount(Node *node);
 int occurrencesCount(Node *node, char *name);
@@ -19,8 +20,7 @@ int height(Node *node);
 void displayPreOrder(Node *node);	 // starts at the root and goes first to the left branch and then to the right branch
 void displayInOrder(Node *node);	 // starts on the left branch, goes through the root and goes to the right branch
 void displayPostOrder(Node *node); // starts on the left branch and goes first to the right branch and then to the root
-void FreeNode(Node *node);
-int isEmpty(Node *node);
+void destroyNode(Node *node);
 
 int main()
 {
@@ -53,7 +53,7 @@ int main()
 	printf("\n");
 	printf("The tree height is: %d and has %d nodes.\n", height(binTree), leafsCount(binTree));
 
-	FreeNode(binTree);
+	destroyNode(binTree);
 
 	return 0;
 }
@@ -67,6 +67,14 @@ Node *newNode(char *name, Node *left, Node *right)
 	node->right = right;
 
 	return node;
+}
+
+int isEmpty(Node *node)
+{
+	if (node == NULL)
+		return 1;
+	else
+		return 0;
 }
 
 int itBelongs(Node *node, char *name)
@@ -169,25 +177,17 @@ void displayPostOrder(Node *node)
 	printf(">");
 }
 
-void FreeNode(Node *node)
+void destroyNode(Node *node)
 {
 	if (isEmpty(node))
 		return;
 	else
 	{
-		FreeNode(node->left);
-		FreeNode(node->right); // recursion to free all nodes
+		destroyNode(node->left);
+		destroyNode(node->right); // recursion to free all nodes
 
 		free(node->name);
 		free(node);
 		node = NULL;
 	}
-}
-
-int isEmpty(Node *node)
-{
-	if (node == NULL)
-		return 1;
-	else
-		return 0;
 }

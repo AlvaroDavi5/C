@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <limits.h>
 
 #define Item int
@@ -13,12 +14,12 @@ struct stack
 typedef struct stack Stack; // Stack is a LIFO data structure
 
 Stack *createStack(unsigned int capacity);
-void freeStack(Stack *stack);
+void destroyStack(Stack *stack);
 void push(Stack *stack, Item item);
 Item pop(Stack *stack);
 Item peek(Stack *stack);
-int isFull(Stack *stack);
-int isEmpty(Stack *stack);
+bool isFull(Stack *stack);
+bool isEmpty(Stack *stack);
 
 int main()
 {
@@ -27,7 +28,7 @@ int main()
 
 	do
 	{
-		printf("\n------------- SELECT A OPTION -------------\n");
+		printf("\n------------- SELECT AN OPTION -------------\n");
 		printf("0. Exit\n");
 		printf("1. Push\n");
 		printf("2. Pop\n");
@@ -40,7 +41,7 @@ int main()
 		switch (op)
 		{
 		case 0:
-			freeStack(my_stack);
+			destroyStack(my_stack);
 			exit(0);
 			break;
 		case 1:
@@ -76,7 +77,7 @@ Stack *createStack(unsigned int capacity)
 	stack->size = capacity;
 	stack->top = -1;
 
-	stack->array = (int *)malloc(stack->size * sizeof(Item));
+	stack->array = (Item *)malloc(stack->size * sizeof(Item));
 
 	return stack;
 }
@@ -109,17 +110,17 @@ Item peek(Stack *stack)
 	}
 }
 
-int isFull(Stack *stack)
+bool isFull(Stack *stack)
 {
 	return stack->top == stack->size - 1;
 }
 
-int isEmpty(Stack *stack)
+bool isEmpty(Stack *stack)
 {
 	return stack->top == -1;
 }
 
-void freeStack(Stack *stack)
+void destroyStack(Stack *stack)
 {
 	if (stack != NULL)
 	{

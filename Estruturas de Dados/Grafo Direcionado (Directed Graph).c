@@ -15,12 +15,13 @@ struct graph
 };
 typedef struct graph Graph;
 
-Graph *createGraph(int verticesAmount);
+Graph *createGraph(unsigned int verticesAmount);
 void destroyGraph(Graph *graph);
 bool addEdge(Graph *graph, unsigned int src, unsigned int dest, float weight);
 bool hasEdge(Graph *graph, unsigned int src, unsigned int dest);
-void depthFirstSearch(Graph *graph, int vertex, unsigned int *visitedVertices);
-void breadthFirstSearch(Graph *graph, int vertex, unsigned int *visitedVertices, int *verticesQueue);
+void depthFirstSearch(Graph *graph, int srcVertex, unsigned int *visitedVertices);
+void breadthFirstSearch(Graph *graph, int srcVertex, unsigned int *visitedVertices, int *verticesQueue);
+void dijkstra(Graph *graph, int srcVertex, int destVertex);
 void displayGraphEdges(Graph *graph);
 void displayGraphTable(Graph *graph);
 
@@ -53,12 +54,15 @@ int main()
 		visitedVertices[i] = UNKNOWN;
 	breadthFirstSearch(graph, 0, visitedVertices, verticesQueue);
 
+	printf("\nDijkstra Algorithm:\n");
+	dijkstra(graph, 0, 4);
+
 	destroyGraph(graph);
 
 	return 0;
 }
 
-Graph *createGraph(int verticesAmount)
+Graph *createGraph(unsigned int verticesAmount)
 {
 	Graph *gr = malloc(sizeof(Graph));
 	if (gr == NULL)
@@ -89,7 +93,7 @@ Graph *createGraph(int verticesAmount)
 		for (int j = 0; j < verticesAmount; ++j)
 		{
 			if (i == j)
-				gr->edges[i][j] = 0.0;
+				gr->edges[i][j] = 0.0; // distance from itself
 			else
 				gr->edges[i][j] = MAX_DISTANCE;
 		}
@@ -100,18 +104,19 @@ Graph *createGraph(int verticesAmount)
 
 void destroyGraph(Graph *graph)
 {
-	if (graph->edges == NULL)
-		return;
-
-	for (int i = 0; i < graph->verticesAmount; i++)
+	if (graph->edges != NULL)
 	{
-		if (graph->edges[i] != NULL)
+		for (int i = 0; i < graph->verticesAmount; i++)
 		{
-			free(graph->edges[i]);
+			if (graph->edges[i] != NULL)
+			{
+				free(graph->edges[i]);
+			}
 		}
+
+		free(graph->edges);
 	}
 
-	free(graph->edges);
 	free(graph);
 }
 
@@ -119,6 +124,9 @@ bool addEdge(Graph *graph, unsigned int src, unsigned int dest, float weight)
 {
 	if (hasEdge(graph, src, dest))
 		return false;
+
+	if (weight <= 0)
+		weight = 1.0;
 
 	graph->edges[src][dest] = weight;
 	graph->edgesAmount++;
@@ -139,20 +147,20 @@ bool hasEdge(Graph *graph, unsigned int src, unsigned int dest)
 	return false;
 }
 
-void depthFirstSearch(Graph *graph, int vertex, unsigned int *visitedVertices)
+void depthFirstSearch(Graph *graph, int srcVertex, unsigned int *visitedVertices)
 {
-	if (graph == NULL || vertex < 0 || vertex >= graph->verticesAmount)
+	if (graph == NULL || srcVertex < 0 || srcVertex >= graph->verticesAmount)
 	{
 		printf("Invalid input\n");
 		return;
 	}
 
-	visitedVertices[vertex] = VISITED;
-	printf("Visited vertex: %d\n", vertex);
+	visitedVertices[srcVertex] = VISITED;
+	printf("Visited vertex: %d\n", srcVertex);
 
 	for (int i = 0; i < graph->verticesAmount; i++)
 	{
-		float w = graph->edges[vertex][i];
+		float w = graph->edges[srcVertex][i];
 		if (w > 0 && w < MAX_DISTANCE)
 		{
 			if (visitedVertices[i] == UNKNOWN)
@@ -163,12 +171,12 @@ void depthFirstSearch(Graph *graph, int vertex, unsigned int *visitedVertices)
 				printf("Founded finished vertex: %d\n", i);
 		}
 	}
-	visitedVertices[vertex] = FINISHED;
+	visitedVertices[srcVertex] = FINISHED;
 }
 
-void breadthFirstSearch(Graph *graph, int vertex, unsigned int *visitedVertices, int *verticesQueue)
+void breadthFirstSearch(Graph *graph, int srcVertex, unsigned int *visitedVertices, int *verticesQueue)
 {
-	if (graph == NULL || vertex < 0 || vertex >= graph->verticesAmount)
+	if (graph == NULL || srcVertex < 0 || srcVertex >= graph->verticesAmount)
 	{
 		printf("Invalid input\n");
 		return;
@@ -177,8 +185,8 @@ void breadthFirstSearch(Graph *graph, int vertex, unsigned int *visitedVertices,
 	int front = 0;
 	int rear = 0;
 
-	verticesQueue[rear++] = vertex;
-	visitedVertices[vertex] = VISITED;
+	verticesQueue[rear++] = srcVertex;
+	visitedVertices[srcVertex] = VISITED;
 
 	while (front < rear)
 	{
@@ -206,13 +214,73 @@ void breadthFirstSearch(Graph *graph, int vertex, unsigned int *visitedVertices,
 	}
 }
 
+int _minDistance(float *distanceFromSource, unsigned int *visitedVertices, const unsigned int verticesAmount)
+{
+	float min = MAX_DISTANCE;
+	unsigned int minIndex = 0;
+
+	for (int v = 0; v < verticesAmount; v++)
+	{
+		if (visitedVertices[v] < VISITED && distanceFromSource[v] <= min)
+		{
+			min = distanceFromSource[v];
+			minIndex = v;
+		}
+	}
+
+	return minIndex;
+}
+
+void dijkstra(Graph *graph, int srcVertex, int destVertex)
+{
+	const unsigned int verticesAmount = graph->verticesAmount;
+
+	if (srcVertex < 0 || srcVertex >= verticesAmount || destVertex < 0 || destVertex >= verticesAmount)
+	{
+		printf("Invalid input\n");
+		return;
+	}
+
+	float distanceFromSource[verticesAmount];
+	unsigned int visitedVertices[verticesAmount];
+
+	for (int i = 0; i < verticesAmount; i++)
+	{
+		distanceFromSource[i] = MAX_DISTANCE;
+		visitedVertices[i] = UNKNOWN;
+	}
+	distanceFromSource[srcVertex] = 0.0; // distance from itself
+
+	float **edgesArray = graph->edges;
+	for (int j = 0; j < verticesAmount - 1; j++)
+	{
+		int u = _minDistance(distanceFromSource, visitedVertices, verticesAmount);
+		visitedVertices[u] = VISITED;
+
+		for (int v = 0; v < verticesAmount; v++)
+		{
+			float w = edgesArray[u][v];
+			if (visitedVertices[v] < VISITED &&
+					(w > 0 && w < MAX_DISTANCE) &&
+					distanceFromSource[u] != MAX_DISTANCE &&
+					(distanceFromSource[u] + w) < distanceFromSource[v])
+			{
+				distanceFromSource[v] = distanceFromSource[u] + w;
+			}
+		}
+	}
+
+	printf("Distance from [%d] to [%d]: %.5f\n", srcVertex, destVertex, distanceFromSource[destVertex]);
+}
+
 void displayGraphEdges(Graph *graph)
 {
+	float **edgesArray = graph->edges;
 	for (int from = 0; from < graph->verticesAmount; from++)
 	{
 		for (int to = 0; to < graph->verticesAmount; to++)
 		{
-			float w = graph->edges[from][to];
+			float w = edgesArray[from][to];
 			if (w > 0 && w < MAX_DISTANCE)
 			{
 				printf("%d -> %d;\n", from, to);
@@ -228,12 +296,13 @@ void displayGraphTable(Graph *graph)
 		printf(" %d | ", i);
 	printf("\n");
 
+	float **edgesArray = graph->edges;
 	for (int i = 0; i < graph->verticesAmount; i++)
 	{
 		printf("%d |", i);
 		for (int j = 0; j < graph->verticesAmount; j++)
 		{
-			float w = graph->edges[i][j];
+			float w = edgesArray[i][j];
 			if (w > 0 && w < MAX_DISTANCE)
 				printf("%.1f, ", w);
 			else if (w == 0)

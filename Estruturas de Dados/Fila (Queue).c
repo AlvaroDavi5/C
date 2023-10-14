@@ -1,25 +1,26 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <limits.h>
 
 #define Item int
 
 struct queue
 {
-	int front, rear, actualSize;
-	unsigned int size;
+	int front, rear;
+	unsigned int size, actualSize;
 	Item *array;
 };
 typedef struct queue Queue; // Queue is a FIFO data structure
 
 Queue *createQueue(unsigned int size);
-void freeQueue(Queue *queue);
-int isFull(Queue *queue);
+void destroyQueue(Queue *queue);
+bool isFull(Queue *queue);
+bool isEmpty(Queue *queue);
 void enqueue(Queue *queue, Item item);
 Item dequeue(Queue *queue);
 Item front(Queue *queue);
 Item rear(Queue *queue);
-int isEmpty(Queue *queue);
 
 int main()
 {
@@ -28,7 +29,7 @@ int main()
 
 	do
 	{
-		printf("\n------------- SELECT A OPTION -------------\n");
+		printf("\n------------- SELECT AN OPTION -------------\n");
 		printf("0. Exit\n");
 		printf("1. Enqueue\n");
 		printf("2. Dequeue\n");
@@ -42,7 +43,7 @@ int main()
 		switch (op)
 		{
 		case 0:
-			freeQueue(my_queue);
+			destroyQueue(my_queue);
 			exit(0);
 			break;
 		case 1:
@@ -83,7 +84,7 @@ Queue *createQueue(unsigned int size)
 	queue->front = queue->size;
 	queue->rear = size - 1;
 
-	queue->array = (int *)malloc(queue->size * sizeof(Item));
+	queue->array = (Item *)malloc(queue->size * sizeof(Item));
 
 	return queue;
 }
@@ -132,17 +133,17 @@ Item rear(Queue *queue)
 	return queue->array[queue->rear];
 }
 
-int isFull(Queue *queue)
+bool isFull(Queue *queue)
 {
 	return (queue->actualSize == queue->size);
 }
 
-int isEmpty(Queue *queue)
+bool isEmpty(Queue *queue)
 {
 	return (queue->actualSize == 0);
 }
 
-void freeQueue(Queue *queue)
+void destroyQueue(Queue *queue)
 {
 	if (queue != NULL)
 	{

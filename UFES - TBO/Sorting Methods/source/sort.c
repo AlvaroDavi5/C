@@ -7,7 +7,8 @@ void bubbleSort(Item *array, size_t size)
 	{
 		for (size_t j = 0; j < (size - i) - 1; j++) // O(N-1) == O(N)
 		{
-			compSwap(array[j], array[j + 1]);
+			if ((array[j + 1]) < (array[j]))
+				swap(array[j], array[j + 1]);
 		}
 	}
 }
@@ -154,7 +155,7 @@ void heapSort(Item *array, size_t size)
 {
 	// O(lg N) * O(N/2) == O(N * lg N)
 	for (int i = size / 2 - 1; i >= 0; i--) // O(N/2-1) == O(N/2)
-		_heapify(array, size, i); // O(lg N)
+		_heapify(array, size, i);							// O(lg N)
 
 	// O(lg N) * O(N) == O(N * lg N)
 	for (size_t i = size - 1; i > 0; i--) // O(N-1) == O(N)
