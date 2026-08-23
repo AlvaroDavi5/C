@@ -1,57 +1,101 @@
 #include "../include/sieve_of_eratosthenes.h"
 
-bool isMultiple(int n1, int n2)
+bool isMultiple(int number, int base)
 {
-	return n1 % n2 == 0;
+	return number % base == 0;
 }
 
-void calcPrimeNumbers(int *numList, const int n)
+void calcPrimeNumbersV1(int *numList, const int arrSize)
 {
-	int maxCheckedNumber = floor(sqrt(n));
-	int num = 2; // first prime number
-	int size = 0;
+	int num = 2; // two is the first possible prime number
 
 	// populate number list
-	for (num = 2; num <= n; num++, size++)
-		numList[size] = num;
+	for (int k = 0, num = 2; num <= arrSize; num++, k++)
+	{
+		numList[k] = num;
+	}
 
-	int i = 0, removedCount = 0;
 	bool wasRemoved = false;
-	while (true)
+	for (int i = 0; i < arrSize; i++)
 	{
 		wasRemoved = false;
-
-		if (numList[i] != REMOVED_NUMBER)
+		if (numList[i] == REMOVED_NUMBER)
 		{
-			num = numList[i];
-		}
-		else
-		{
-			i++;
 			continue;
 		}
+		num = numList[i];
 
 		// remove prime number multiples
-		for (int j = i + 1; j < size; j++)
+		for (int j = i + 1; j < arrSize; j++)
 		{
-			if (isMultiple(numList[j], num))
+			if (numList[j] != REMOVED_NUMBER && isMultiple(numList[j], num))
 			{
-				numList[j] = REMOVED_NUMBER; // removed
+				numList[j] = REMOVED_NUMBER;
 				wasRemoved = true;
-				removedCount++;
 			}
 		}
-		if (wasRemoved == false || numList[i] == maxCheckedNumber)
-			break;
-		i++;
-	}
 
-	printf("Prime List:\n");
-	for (int k = 0; k < n; k++)
-	{
-		if (numList[k] != REMOVED_NUMBER)
+		if (wasRemoved == false)
 		{
-			printf("%d\n", numList[k]);
+			// break;
 		}
 	}
+}
+
+void calcPrimeNumbersV2(int *numList, const int arrSize)
+{
+	const int maxCheckedNumber = floor(sqrt(arrSize));
+	int num = 2; // two is the first possible prime number
+
+	// populate number list
+	for (int k = 0, num = 2; num <= arrSize; num++, k++)
+	{
+		numList[k] = num;
+	}
+
+	bool wasRemoved = false;
+	for (int i = 0; i < arrSize; i++)
+	{
+		wasRemoved = false;
+		if (numList[i] == REMOVED_NUMBER)
+		{
+			continue;
+		}
+		num = numList[i];
+
+		// remove prime number multiples
+		for (int j = i + 1; j < arrSize; j++)
+		{
+			if (numList[j] != REMOVED_NUMBER && isMultiple(numList[j], num))
+			{
+				numList[j] = REMOVED_NUMBER;
+				wasRemoved = true;
+			}
+		}
+
+		if (wasRemoved == false || numList[i] == maxCheckedNumber)
+		{
+			// break;
+		}
+	}
+}
+
+void printPrimeNumbers(int *numList, const int arrSize)
+{
+	unsigned int primeCount = 0;
+	for (int i = 0; i < arrSize; i++)
+	{
+		if (numList[i] != REMOVED_NUMBER)
+			primeCount++;
+	}
+
+	printf("Prime List (count = %d/%d):\n", primeCount, arrSize);
+	for (int i = 0; i < arrSize; i++)
+	{
+		int num = numList[i];
+
+		if (num != REMOVED_NUMBER)
+			printf("%d, ", num);
+	}
+	printf("\nEND\n");
 }
